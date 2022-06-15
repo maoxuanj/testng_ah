@@ -8,6 +8,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.message.BasicNameValuePair;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class testPost {
     String city;
     String url = "https://api.apishop.net/communication/phone/getLocationByPhoneNum";
     String postBody;
-
+    @Ignore
     @Test
     public void testPostRequest() {
         //断言反馈中城市信息是否正确

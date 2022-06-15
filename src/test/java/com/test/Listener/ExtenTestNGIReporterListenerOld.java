@@ -1,4 +1,5 @@
 package com.test.Listener;
+
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.ResourceCDN;
@@ -12,11 +13,13 @@ import org.testng.xml.XmlSuite;
 
 import java.io.File;
 import java.util.*;
-
+/*
+监听的主要目的是为了自定义测试报告路径，格式
+ */
 public class ExtenTestNGIReporterListenerOld implements IReporter {
-    //生成的路径以及文件名
-    private static final String OUTPUT_FOLDER = "test-output/";
-    private static final String FILE_NAME = "index.html";
+    //这里可以自定义生成的路径以及文件名
+    private static final String OUTPUT_FOLDER = "test-output1/";
+    private static final String FILE_NAME = "index1"+System.currentTimeMillis()+".html";
 
     private ExtentReports extent;
 
@@ -191,4 +194,5 @@ public class ExtenTestNGIReporterListenerOld implements IReporter {
         calendar.setTimeInMillis(millis);
         return calendar.getTime();
     }
+
 }

@@ -6,6 +6,7 @@ import com.test.utils.JSONParser;
 import org.apache.http.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class testGet {
     int responseCode;
     String city;
     String url = "https://api.apishop.net/communication/phone/getLocationByPhoneNum?apiKey=nMke6NK29c40b1d1331690abb50b3eec8aa0808389b16c4&phoneNum=1861195236";
+    @Ignore
     @Test
     public void TestGetRequest() {
 

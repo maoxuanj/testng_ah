@@ -66,7 +66,7 @@ public class SetRoleTest {
 
 
 
-
+///service/api/token这个是针对openApi拿到apiKey的，一般接口使用Login拿到token即可
     @Test()
     public void login() throws Exception {
         CloseableHttpClient httpClient =(CloseableHttpClient)SkipHttpsUtil.wrapClient();
@@ -108,7 +108,7 @@ public class SetRoleTest {
     @Test(dependsOnMethods = "login")
     public void skipSSL() throws Exception {
         CloseableHttpClient httpClient =(CloseableHttpClient)SkipHttpsUtil.wrapClient();
-        HttpPost httpPost = new HttpPost("https://10.50.38.76/user/list_user");
+        HttpPost httpPost = new HttpPost("https://10.50.38.76/login");
         httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
         httpPost.addHeader("apiKey",token);
         JSONObject params = new JSONObject();

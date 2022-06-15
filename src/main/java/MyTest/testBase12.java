@@ -42,6 +42,9 @@ public class testBase12 {
             properties.load(bufferedReader);
         }
         url = properties.getProperty("url");
+        if(url ==null){
+            url = "https://10.50.80.66";
+        }
 
 
 

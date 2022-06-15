@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class UserTest {
+public class UserTestDemo {
     CloseableHttpResponse response=null;
     String entityStr = null;
     //登录url
@@ -44,8 +44,6 @@ public class UserTest {
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
-
-
     }
 
 
@@ -76,21 +74,21 @@ public class UserTest {
     }
 
 
-
     @Test
     public void login_postmanchange() throws Exception{
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
+
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 //        RequestBody body = RequestBody.create(mediaType, "username=admin&password=1foU/PiaMrJdyErmMAj+Vg==");
-        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","1foU/PiaMrJdyErmMAj+Vg==")
+        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","VErz1M+wN/eDim4MG0fJOg==")
                 .build();
         Request request = new Request.Builder()
-                .url("https://10.20.128.74/login")
+                .url("https://10.50.80.66/login")
                 .post(formBody)
-                .addHeader("Times", "1654046536400")
+                .addHeader("Times", "1655196405896")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
         Response response = client.newCall(request).execute();
@@ -110,7 +108,7 @@ public class UserTest {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         Request request = new Request.Builder()
-                .url("https://10.20.128.74/user/list_user?limit=20&offset=0")
+                .url("https://10.50.80.66/user/list_user?limit=20&offset=0")
                 .method("GET", null)
                 .addHeader("Authorization", "Bearer "+token)
                 .addHeader("Content-Type", "application/json")
@@ -123,8 +121,8 @@ public class UserTest {
 
     }
 
-
-    @Test
+    //groups在自动化执行的xml可以配置，哪些执行include,哪些忽略：exclude
+    @Test(groups = "ignore")
     public void getAllLessUser() throws IOException {
 
         OkHttpClient    client = new OkHttpClient().newBuilder()
@@ -132,6 +130,7 @@ public class UserTest {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         Request request = new Request.Builder()
+                //这里的url内容，可以做拼接，从testBase里面读取。最终实现上可以在脚本中做入参，配合打包可以适用各种环境
                 .url("https://10.20.128.74/user/getAllLessUser")
                 .method("GET", null)
                 .addHeader("Authorization", "Bearer eyJ1aWQiOiIwMWQxYmZhYi00ZjhjLTQ0YzUtYWI3Zi03YzY3ZjUxNjczYjkiLCJ0cyI6IjE2NTQwNzA3MTc1MjcifQ==.ZTVmNjFlMzE4ZmY5Mjc4ZmRhOTdmNTMxYjdiNDA4YmU=")
