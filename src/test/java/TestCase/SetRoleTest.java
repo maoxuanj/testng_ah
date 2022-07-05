@@ -15,6 +15,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SetRoleTest {
@@ -67,7 +68,7 @@ public class SetRoleTest {
 
 
 ///service/api/token这个是针对openApi拿到apiKey的，一般接口使用Login拿到token即可
-    @Test()
+    @Test(threadPoolSize = 20,invocationCount = 50)
     public void login() throws Exception {
         CloseableHttpClient httpClient =(CloseableHttpClient)SkipHttpsUtil.wrapClient();
         HttpPost httpPost = new HttpPost("https://10.50.38.76/service/api/token");
@@ -98,7 +99,7 @@ public class SetRoleTest {
         String data = jsonObject.get("data").toString();
         Assert.assertEquals(jsonObject.get("code"),200);
         token =JSONObject.parseObject(jsonObject.get("data").toString()).get("token").toString();
-        String token1 = JSONUtils.JSONchange(data);
+        String token1 = JSONUtils.JSONchange(data,"token");
         System.out.println(token);
         System.out.println(token1);
 
@@ -123,6 +124,23 @@ public class SetRoleTest {
         HttpEntity entity = response.getEntity();
         String responseContent = EntityUtils.toString(entity, "UTF-8");
         System.out.println(responseContent);
+    }
+
+    //强行增加本地cup的东西，自动化不执行
+    //@Test(threadPoolSize = 20,invocationCount = 10000)
+    public void add() throws IOException {
+        String path1 = "D:\\zhuomian\\map\\delete\\";
+        String name;
+        String file_path;
+        File file;
+        for(int i=0;i<1000;i++){
+             name = "aaa"+System.currentTimeMillis();
+            file_path =path1+name+"file.txt";
+            file = new File(file_path);
+            file.createNewFile();
+            i++;
+            System.out.println(file);
+        }
     }
 
 }

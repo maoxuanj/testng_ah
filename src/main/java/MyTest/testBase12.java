@@ -1,22 +1,37 @@
 package MyTest;
 
+
+import com.edr.cloud.core.service.AccessService;
+import com.edr.cloud.core.service.AgentConfService;
+import com.edr.cloud.core.service.impl.AccessServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+//import com.edr.cloud.base.service.AboutService;
 public class testBase12 {
-    public String url;
+    public static String url;
     public String userName;
     public String password;
+    public static String token;
     public String ProdName;
     public String version;
     public String pathName;
     public BufferedReader bufferedReader;
     public Properties properties = new Properties();
+    //jar包为spring boot项目，没法直接使用
+//    public AboutService aboutService;
+    public AccessService accessService;
 
-    public  void init() throws IOException {
+    @Autowired
+    public AccessServiceImpl accessServiceImpl;
+    @Autowired
+    AgentConfService agentConfService;
+
+    public  void  init() throws IOException {
         new Startup();
         //此处对产品名称，版本赋值
         ProdName = "EDR";
@@ -43,11 +58,23 @@ public class testBase12 {
         }
         url = properties.getProperty("url");
         if(url ==null){
-            url = "https://10.50.80.66";
+          System.out.println("地址为空");
+          return ;
         }
 
 
-
+//        public void getAboutService(AboutService aboutService){
+//
+//                    this.aboutService = aboutService;
+//        }
 
     }
+//
+    public AccessService getAccessService(){
+        if(accessServiceImpl ==null){
+            accessServiceImpl = new AccessServiceImpl();
+        }
+        return accessServiceImpl;
+    }
+
 }
