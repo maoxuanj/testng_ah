@@ -53,6 +53,42 @@ public class permissions extends testBase12 {
 //        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
     }
 
+    @Test(parameters ="")
+    public void permissions() throws IOException {
+        request1 = RequestUtil.requestGet(url+"/permissions",token);
+        JSONObject result = TestBase.ResultHttp(request1);
+//        Assert.assertTrue(result.get("data")!=null);
+//        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
+    }
+
+
+    @Test(parameters ="")
+    public void permissions_user() throws IOException {
+        TestBase.http_user_init();
+        request1 = RequestUtil.requestGet(url+"/permissions",token);
+        JSONObject result = TestBase.ResultHttp(request1);
+//        Assert.assertTrue(result.get("data")!=null);
+//        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
+    }
+
+    @Test(parameters ="")
+    public void profile() throws IOException {
+        TestBase.http_user_init();
+        request1 = RequestUtil.requestGet(url+"/profile",token);
+        JSONObject result = TestBase.ResultHttp(request1);
+//        Assert.assertTrue(result.get("data")!=null);
+//        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
+    }
+
+    @Test(parameters ="")
+    public void home() throws IOException {
+        TestBase.http_user_init();
+        request1 = RequestUtil.requestGet(url+"/permissions/home",token);
+        JSONObject result = TestBase.ResultHttp(request1);
+//        Assert.assertTrue(result.get("data")!=null);
+//        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
+    }
+
 
 
 }

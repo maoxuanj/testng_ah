@@ -19,12 +19,31 @@ public class TestBase extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","KCpqAQ2l1b31dQD8HyMFYg==")
+        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","SjAHJH2XrbBgqgiJcxY/dQ==")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
                 .post(formBody)
-                .addHeader("Times", "1656057556265")
+                .addHeader("Times", "1657172548579")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+        Response response = client.newCall(request).execute();
+        token = JSONObject.parseObject(response.body().string()).get("token").toString();
+        return token;
+    }
+
+    public static String  http_user_init() throws IOException {
+        client = new OkHttpClient().newBuilder()
+                .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
+                .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .build();
+        //初始化拿到token
+        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","SjAHJH2XrbBgqgiJcxY/dQ==")
+                .build();
+        Request request = new Request.Builder()
+                .url(url+"/login")
+                .post(formBody)
+                .addHeader("Times", "1657172548579")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
         Response response = client.newCall(request).execute();

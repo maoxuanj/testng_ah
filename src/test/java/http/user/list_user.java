@@ -49,8 +49,9 @@ public class list_user extends testBase12 {
                 .build();
     }
 
-    @Test(parameters ="")
-    public void user_list_user() throws IOException {
+
+    @Test(parameters ="",groups = "ignore")
+    public void user_list_user_demo() throws IOException {
         request1 =RequestUtil.requestGet(url+"/user/list_user?limit=20&offset=0&order=&sort=",token);
         JSONObject result = TestBase.ResultHttp(request1);
         String asjson = result.getJSONObject("data").getJSONArray("list").get(0).toString();
@@ -83,6 +84,12 @@ public class list_user extends testBase12 {
         //注意，int 1 == int 1可以用==,都是string类型的时候用.equals();
         Assert.assertTrue(JSONchange(asjson,"beUsed").equals("1"));
         Assert.assertTrue(Integer.parseInt((JSONchange(asjson,"beUsed")))==1);;
+    }
+
+    @Test(parameters ="")
+    public void user_list_user() throws IOException{
+        request1 =RequestUtil.requestGet(url+"/user/list_user?limit=20&offset=0&order=&sort=",token);
+        JSONObject result = TestBase.ResultHttp(request1);
     }
 
 

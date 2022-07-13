@@ -25,6 +25,9 @@ public class testBase12 {
     //jar包为spring boot项目，没法直接使用
 //    public AboutService aboutService;
     public AccessService accessService;
+    public String linux;
+    public String linux_username;
+    public String linux_password;
 
     @Autowired
     public AccessServiceImpl accessServiceImpl;
@@ -57,6 +60,10 @@ public class testBase12 {
             properties.load(bufferedReader);
         }
         url = properties.getProperty("url");
+        linux = properties.getProperty("linux");
+        linux_username = properties.getProperty("linux_username");
+        linux_password = properties.getProperty("linux_password");
+        //url = "https://10.50.38.93";
         if(url ==null){
           System.out.println("地址为空");
           return ;
