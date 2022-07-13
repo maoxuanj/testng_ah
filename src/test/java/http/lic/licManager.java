@@ -1,18 +1,11 @@
 package http.lic;
 
 import MyTest.testBase12;
-import com.alibaba.fastjson.JSONObject;
-import com.test.client.RestfulClientGet;
-import com.test.utils.JSONParser;
 import com.test.utils.RequestUtil;
 import com.test.utils.SkipHttpsUtil;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import http.TestBase;
+import okhttp3.*;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -23,52 +16,79 @@ public class licManager extends testBase12 {
     String entityStr = null;
     //登录url
     OkHttpClient client;
-    JSONObject responseBody;
-    int responseCode;
-    String postBody;
-    CloseableHttpClient httpclient1;
-    HttpPost httpPost1;
-    CloseableHttpResponse httpResponse1;
-    String token;
-    RestfulClientGet clientget;
-    JSONObject responseBodyget;
-    JSONParser jParser;
-    int responseCodeget;
-    Request request;
     Request request1;
 
     @BeforeMethod()
     public void beforeClass123() throws IOException {
         //调用teseBase中的Init方法，对url进行赋值，无需每次更新url
         init();
+        TestBase.httpinit();
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
-        //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","VErz1M+wN/eDim4MG0fJOg==")
-                .build();
-        Request request = new Request.Builder()
-                .url(url+"/login")
-                .post(formBody)
-                .addHeader("Times", "1655196405896")
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .build();
-        Response response = client.newCall(request).execute();
-        token = JSONObject.parseObject(response.body().string()).get("token").toString();
     }
 
-
-
-
-
     @Test(parameters ="")
-    public void user_list_user() throws IOException {
+    public void get_lic_model1() throws IOException {
         request1 =RequestUtil.requestGet(url+"/licManage/get_lic_model",token);
         Response response = client.newCall(request1).execute();
         System.out.println(response.body().string());
 
     }
+
+
+    @Test(parameters ="",description = "查看产品许可证详情")
+    public void get_product_lic() throws IOException {
+        request1 =RequestUtil.requestGet(url+"/licManage/get_product_lic",token);
+        Response response = client.newCall(request1).execute();
+        System.out.println(response.body().string());
+
+    }
+
+
+
+    @Test(parameters ="",description = "导出许可")
+    public void exportLic() throws IOException {
+        request1 =RequestUtil.requestGet(url+"/licManage/exportLic",token);
+        Response response = client.newCall(request1).execute();
+        System.out.println(response.body().string());
+
+    }
+
+
+    @Test(parameters ="",description = "判断是否已导入许可")
+    public void import_license_first() throws IOException {
+        request1 =RequestUtil.requestGet_NoToken(url+"/licManage/import_license_first");
+        Response response = client.newCall(request1).execute();
+        System.out.println(response.body().string());
+
+
+//        Request request = new Request.Builder()
+//                .url(url+"/licManage/import_license_first")
+//                .method("GET", null)
+//                .addHeader("Accept", "application/json, text/plain, */*")
+//                .addHeader("Accept-Language", "")
+//                .addHeader("Content-Type", "application/json")
+//                .addHeader("Cookie", "token=; JSESSIONID=2EA297F115442A937B0543395A874C20")
+//                .build();
+//        Response response = client.newCall(request).execute();
+//        System.out.println(response.body().string());
+
+    }
+
+
+
+    @Test(parameters ="",description = "获取许可模型情况")
+    public void get_lic_model() throws IOException {
+        request1 =RequestUtil.requestGet(url+"/licManage/get_lic_model",token);
+        Response response = client.newCall(request1).execute();
+        System.out.println(response.body().string());
+
+    }
+
+
+
 
 
 

@@ -2,6 +2,7 @@ package com.test.utils;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class RequestUtil {
     public static final Request requestPost(String url, FormBody formBody){
@@ -27,6 +28,38 @@ public class RequestUtil {
 
         return request;
     }
+
+    public static final Request requestPut(String url, String token, RequestBody body){
+        Request request = new Request.Builder()
+                .url(url)
+                .method("PUT", body)
+                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        return request;
+    }
+
+    public static final Request requestGet_NoToken(String url){
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .method("GET", null)
+//                .addHeader("Accept", "application/json, text/plain, */*")
+//                .addHeader("Accept-Language", "")
+//                .addHeader("Content-Type", "application/json")
+//                .addHeader("Cookie", "token=; JSESSIONID=2EA297F115442A937B0543395A874C20")
+//                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .method("GET", null)
+                .addHeader("Accept", "application/json, text/plain, */*")
+                .addHeader("Accept-Language", "")
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Cookie", "token=; JSESSIONID=2EA297F115442A937B0543395A874C20")
+                .build();
+        return request;
+    }
+
 
 
 

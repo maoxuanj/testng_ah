@@ -29,7 +29,7 @@ public class DataProviderDemo extends testBase12 {
         return new Object[][]{
                 {1,"用户名为空","", "12345678",401},
                 {2,"密码为空","dandan", "",400},
-                {3,"正确的用户名密码","admin", "1foU/PiaMrJdyErmMAj+Vg==",200}
+                {3,"正确的用户名密码","admin", "SjAHJH2XrbBgqgiJcxY/dQ==",200}
         };
     }
 
@@ -57,7 +57,7 @@ public class DataProviderDemo extends testBase12 {
                     .url(url+"/login")
                     .post(formBody)
                     //todo 这里的times和加密方式后续需要优化的，动态生成，密钥使用
-                    .addHeader("Times", "1654046536400")
+                    .addHeader("Times", "1657172548579")
                     .addHeader("Content-Type", "application/x-www-form-urlencoded")
                     .build();
             Response response = client.newCall(request).execute();

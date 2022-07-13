@@ -1,4 +1,4 @@
-package http.lic;
+package http.user;
 
 import MyTest.testBase12;
 import com.test.utils.RequestUtil;
@@ -8,18 +8,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class exportLic extends testBase12 {
+public class getAllLessUser extends testBase12 {
     CloseableHttpResponse response = null;
     String entityStr = null;
     //登录url
     OkHttpClient client;
-
     Request request1;
 
     @BeforeMethod()
@@ -32,13 +30,13 @@ public class exportLic extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
     }
+
     @Test(parameters ="")
-    public void user_list_user() throws IOException {
-        request1 = RequestUtil.requestGet(url+"/licManage/exportLic",token);
+    public void getAllLessUser() throws IOException {
+        request1 =RequestUtil.requestGet(url+"/user/getAllLessUser",token);
         Response response = client.newCall(request1).execute();
-        String result = response.body().string();
-        System.out.println(result);
-        Assert.assertTrue(result!=null);
+        System.out.println(response.body().string());
+
     }
 
 
