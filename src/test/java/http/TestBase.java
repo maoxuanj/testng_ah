@@ -19,12 +19,12 @@ public class TestBase extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","SjAHJH2XrbBgqgiJcxY/dQ==")
+        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","LYqe5P2mA/BaEeyKdSKmDA==")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
                 .post(formBody)
-                .addHeader("Times", "1657172548579")
+                .addHeader("Times", "1662445157137")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
         Response response = client.newCall(request).execute();
@@ -38,17 +38,39 @@ public class TestBase extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","SjAHJH2XrbBgqgiJcxY/dQ==")
+        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","LYqe5P2mA/BaEeyKdSKmDA==")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
                 .post(formBody)
-                .addHeader("Times", "1657172548579")
+                .addHeader("Times", "1662445157137")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
         Response response = client.newCall(request).execute();
         token = JSONObject.parseObject(response.body().string()).get("token").toString();
         return token;
+        //或者可以通过页面触发的方式，获取token，浏览器启动，输入账号密码，初始化的东西TODO
+    }
+
+
+    public static String  http_user_init_other() throws IOException {
+        client = new OkHttpClient().newBuilder()
+                .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
+                .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .build();
+        //初始化拿到token
+        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
+                .build();
+        Request request = new Request.Builder()
+                .url(url+"/login")
+                .post(formBody)
+                .addHeader("Times", "1662445157137")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+        Response response = client.newCall(request).execute();
+        token = JSONObject.parseObject(response.body().string()).get("token").toString();
+        return token;
+
     }
 
 

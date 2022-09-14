@@ -17,10 +17,50 @@ public class RequestUtil {
         return request;
     }
 
+    public static final Request requestPatch(String url, RequestBody requestBody, String token){
+        Request request = new Request.Builder()
+                .url(url)
+                .patch(requestBody)
+                //times属性仅针对login接口
+//                .addHeader("Times", "1654046536400")
+                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+
+        return request;
+    }
+
+
+
+    public static final Request requestPost1(String url, RequestBody requestBody, String token){
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                //times属性仅针对login接口
+//                .addHeader("Times", "1654046536400")
+                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+
+        return request;
+    }
+
     public static final Request requestGet(String url, String token){
         Request request = new Request.Builder()
                 .url(url)
                 .method("GET", null)
+                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Cookie", "JSESSIONID=A1027E17F6A4B1E71CA9629BE2E5C5CD")
+                .build();
+
+        return request;
+    }
+
+    public static final Request requestDELETE(String url, String token){
+        Request request = new Request.Builder()
+                .url(url)
+                .method("DELETE", null)
                 .addHeader("Authorization", "Bearer "+token)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Cookie", "JSESSIONID=A1027E17F6A4B1E71CA9629BE2E5C5CD")

@@ -28,6 +28,7 @@ public class testBase12 {
     public String linux;
     public String linux_username;
     public String linux_password;
+    public String linux_name;
 
     @Autowired
     public AccessServiceImpl accessServiceImpl;
@@ -63,6 +64,7 @@ public class testBase12 {
         linux = properties.getProperty("linux");
         linux_username = properties.getProperty("linux_username");
         linux_password = properties.getProperty("linux_password");
+        linux_name = properties.getProperty("linux_name");
         //url = "https://10.50.38.93";
         if(url ==null){
           System.out.println("地址为空");

@@ -44,7 +44,7 @@ public class SetRole {
     //登录url
     String url ="https://10.50.38.48/menu/setRole";
 
-    @Test()
+    @Test(groups = "ignore")
     public void skipSSL() throws Exception {
         SkipHttpsUtil.sendHttpPost(url,"aaab");
     }
