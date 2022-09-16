@@ -43,7 +43,7 @@ public class initUser extends testBase12 {
             for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
                 userName = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("realName").toString();
                 System.out.println(userName);
-                if(userName.equals("mxj4")){
+                if(userName.equals("mxj5")){
                     System.out.println("有mxj租户啦");
                     break;
                 }else{
@@ -52,9 +52,9 @@ public class initUser extends testBase12 {
             }
         }
         //不存在时，创建mxj租户，密码为Admin1234
-        if(!userName.equals("mxj4")){
+        if(!userName.equals("mxj5")){
             System.out.println("需要创建");
-            RequestBody body = RequestBody.create(mediaType,"{\"userName\":\"mxj4\",\"password\":\"4X29YyXnw+zhGLXYp0VulQ==\",\"beUsed\":1,\"changePwd\":1,\"loginTimes\":1000,\"failCount\":5,\"neverTimeout\":1440,\"isLock\":15,\"licNum\":0,\"tel\":\"\",\"roleId\":\"1\",\"lessUser\":\"\",\"roleName\":\"租户管理员\",\"userLicenses\":[{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"18\",\"name\":\"DAS-EDR-S800-MODULE-SERVER\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":1,\"plusType\":0,\"id\":\"19-1\",\"name\":\"DAS-EDR-S800G-MODULE-SERVER-WEB\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"24\",\"name\":\"DAS-CWPP-AG-Workstation\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"25\",\"name\":\"DAS-CWPP-AG-Workload\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"6-1\",\"name\":\"DAS-EDR-PC\",\"endTime\":\"2023-09-30\"}],\"role\":2,\"userid\":\"\"}");
+            RequestBody body = RequestBody.create(mediaType,"{\"userName\":\"mxj5\",\"password\":\"4X29YyXnw+zhGLXYp0VulQ==\",\"beUsed\":1,\"changePwd\":1,\"loginTimes\":1000,\"failCount\":5,\"neverTimeout\":1440,\"isLock\":15,\"licNum\":0,\"tel\":\"\",\"roleId\":\"1\",\"lessUser\":\"\",\"roleName\":\"租户管理员\",\"userLicenses\":[{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"18\",\"name\":\"DAS-EDR-S800-MODULE-SERVER\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":1,\"plusType\":0,\"id\":\"19-1\",\"name\":\"DAS-EDR-S800G-MODULE-SERVER-WEB\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"24\",\"name\":\"DAS-CWPP-AG-Workstation\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"25\",\"name\":\"DAS-CWPP-AG-Workload\",\"endTime\":\"2023-09-30\"},{\"limit\":1,\"bindModel\":null,\"plus\":0,\"plusType\":0,\"id\":\"6-1\",\"name\":\"DAS-EDR-PC\",\"endTime\":\"2023-09-30\"}],\"role\":2,\"userid\":\"\"}");
             request1 = RequestUtil.requestPost1(url+"/user/save",body,token_admin);
             JSONObject result_add = TestBase.ResultHttp(request1);
         }
