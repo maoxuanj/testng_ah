@@ -1,11 +1,6 @@
 package MyTest;
 
 
-import com.edr.cloud.core.service.AccessService;
-import com.edr.cloud.core.service.AgentConfService;
-import com.edr.cloud.core.service.impl.AccessServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,17 +20,17 @@ public class testBase12 {
     public Properties properties = new Properties();
     //jar包为spring boot项目，没法直接使用
 //    public AboutService aboutService;
-    public AccessService accessService;
+//    public AccessService accessService;
     public String linux;
     public String linux_username;
     public String linux_password;
     public String linux_name;
     public static String user_name;
 
-    @Autowired
-    public AccessServiceImpl accessServiceImpl;
-    @Autowired
-    AgentConfService agentConfService;
+//    @Autowired
+//    public AccessServiceImpl accessServiceImpl;
+//    @Autowired
+//    AgentConfService agentConfService;
 
     public  void  init() throws IOException {
         new Startup();
@@ -81,12 +76,12 @@ public class testBase12 {
 //        }
 
     }
-//
-    public AccessService getAccessService(){
-        if(accessServiceImpl ==null){
-            accessServiceImpl = new AccessServiceImpl();
-        }
-        return accessServiceImpl;
-    }
+////
+//    public AccessService getAccessService(){
+//        if(accessServiceImpl ==null){
+//            accessServiceImpl = new AccessServiceImpl();
+//        }
+//        return accessServiceImpl;
+//    }
 
 }
