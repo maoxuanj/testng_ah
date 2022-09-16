@@ -25,7 +25,7 @@ public class platform extends testBase12{
     public void beforeClass123() throws IOException {
         //调用teseBase中的Init方法，对url进行赋值，无需每次更新url
         init();
-        TestBase.http_user_init();
+        TestBase.http_user_init_other();
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())

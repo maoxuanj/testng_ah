@@ -17,6 +17,7 @@ public class testBase12 {
     public String userName;
     public String password;
     public static String token;
+    public static String token_admin;
     public String ProdName;
     public String version;
     public String pathName;
@@ -29,6 +30,7 @@ public class testBase12 {
     public String linux_username;
     public String linux_password;
     public String linux_name;
+    public static String user_name;
 
     @Autowired
     public AccessServiceImpl accessServiceImpl;
@@ -65,6 +67,7 @@ public class testBase12 {
         linux_username = properties.getProperty("linux_username");
         linux_password = properties.getProperty("linux_password");
         linux_name = properties.getProperty("linux_name");
+        user_name = properties.getProperty("user_name");
         //url = "https://10.50.38.93";
         if(url ==null){
           System.out.println("地址为空");

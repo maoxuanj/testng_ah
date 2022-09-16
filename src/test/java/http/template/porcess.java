@@ -177,18 +177,18 @@ public class porcess extends testBase12{
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;touch mxj123.txt");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;touch mxj.txt");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj3;ls");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl 10.50.38.94/?id=1 and 1= 1");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl 10.50.38.94/?alert('test')");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl 10.50.38.94/?redirectAction:test");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl 10.50.38.94/1.html");
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?id=1 and 1= 1");
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?alert('test')");
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?redirectAction:test");
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/1.html");
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/?id=1%20and%201=1");//SQL注入
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/?alert('test')");//XSS攻击
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/?php://input");//应用程序漏洞
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/1.html");//自定义规则
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/a.jpg/a.php");//文件解析防护
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/com1");//畸形文件
-        Runtime.getRuntime().exec("cmd /c start " + "http://10.50.38.94/a.log");//敏感信息防泄漏
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?id=1%20and%201=1");//SQL注入
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?alert('test')");//XSS攻击
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?php://input");//应用程序漏洞
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/1.html");//自定义规则
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/a.jpg/a.php");//文件解析防护
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/com1");//畸形文件
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/a.log");//敏感信息防泄漏
         Runtime.getRuntime().exec("cmd /k cd C:\\!AppDatasbak &&" +"echo hello >> text.txt" );//诱饵文件
         Runtime.getRuntime().exec("cmd /c cd C:\\mxj1 &&" +"echo hello >> text.txt" );//防篡改
         Runtime.getRuntime().exec("cmd /c xcopy D:\\test D:\\zhuomian\\muma\\wenjian1" );//触发渗透追踪——优化就是把文件上传到项目中

@@ -19,7 +19,7 @@ public class TestBase extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","LYqe5P2mA/BaEeyKdSKmDA==")
+        FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","LYqe5P2mA/BaEeyKdSKmDA==")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
@@ -32,13 +32,18 @@ public class TestBase extends testBase12 {
         return token;
     }
 
+    //
+
+
+
+
     public static String  http_user_init() throws IOException {
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","LYqe5P2mA/BaEeyKdSKmDA==")
+        FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","LYqe5P2mA/BaEeyKdSKmDA==")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
@@ -59,7 +64,7 @@ public class TestBase extends testBase12 {
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
                 .build();
         //初始化拿到token
-        FormBody formBody = new FormBody.Builder().add("username","mxj").add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
+        FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
                 .build();
         Request request = new Request.Builder()
                 .url(url+"/login")
@@ -72,6 +77,27 @@ public class TestBase extends testBase12 {
         return token;
 
     }
+
+    public static String  admin_login_other() throws IOException {
+        client = new OkHttpClient().newBuilder()
+                .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
+                .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .build();
+        //初始化拿到token
+        FormBody formBody = new FormBody.Builder().add("username","admin").add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
+                .build();
+        Request request = new Request.Builder()
+                .url(url+"/login")
+                .post(formBody)
+                .addHeader("Times", "1662445157137")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .build();
+        Response response = client.newCall(request).execute();
+        token_admin = JSONObject.parseObject(response.body().string()).get("token").toString();
+        return token_admin;
+
+    }
+
 
 
     public static  JSONObject  ResultHttp(Request request1) throws IOException {
