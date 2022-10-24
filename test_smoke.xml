@@ -5,19 +5,58 @@
         <listener class-name = "com.test.Listener.ExtenTestNGIReporterListenerOld" />
         <listener class-name="com.test.Listener.RePrioritizingListener"></listener>
     </listeners>
-    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="src/test/java">
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="初始化用户">
         <classes>
-            <class name="http.add_assets.get_download_win"></class>
-            <class name="http.add_assets.download_process"></class>
+            <class name="init.initUser"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="安装终端">
+        <classes>
+        <class name="http.add_assets.get_download_win"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="终端操作">
+        <classes>
             <class name="http.asset_overview.assert_overview_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="重新安装/覆盖安装终端">
+        <classes>
             <class name="http.add_assets.download_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="策略管理流程">
+        <classes>
             <class name="http.template.template_porcess"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="病毒扫描流程">
+        <classes>
             <class name="http.virus.virus_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="网马查杀流程">
+        <classes>
             <class name="http.network_trojan_killing.network_trojan_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="主机发现">
+        <classes>
             <class name="http.node_scan.start_scan"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="首页看班">
+        <classes>
             <class name="http.dash_board.node_state"></class>
         </classes>
-
-
     </test>
+
 </suite>

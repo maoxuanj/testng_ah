@@ -134,8 +134,8 @@ public class template_porcess extends testBase12{
         request1 = RequestUtil.requestPost1(url+"/template/save",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
     }
-    //将单机拓展程序文件传送到终端上
-    @Test(description = "连接linux，单机拓展程序文件",priority=9)
+    //将单机拓展程序文件传送到终端上   linux单机拓展不生效，该用例可不执行
+   // @Test(description = "连接linux，单机拓展程序文件",priority=9)
     public void linux_xdome() throws Exception {
         inputFile_linux_withpath(linux,linux_username,linux_password,path1,fileName);
         String result = ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;ls");

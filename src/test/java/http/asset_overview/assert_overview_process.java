@@ -14,6 +14,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class assert_overview_process extends testBase12{
     //登录url
@@ -39,6 +40,8 @@ public class assert_overview_process extends testBase12{
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .readTimeout(25000, TimeUnit.MILLISECONDS)
+                .connectTimeout(25000, TimeUnit.MILLISECONDS)
                 .build();
         mediaType= MediaType.parse("application/json;charset=UTF-8");
         mediaType_text = MediaType.parse("text/plain");
@@ -66,9 +69,6 @@ public class assert_overview_process extends testBase12{
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/set_protect_status",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
         Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
     }
 
 
@@ -94,14 +94,6 @@ public class assert_overview_process extends testBase12{
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/batch_client_reboots",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
         Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
     }
 
     @Test(parameters ="",priority=9,description = "启动防护")
@@ -109,30 +101,16 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"status\":1,\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/set_protect_status",body, token);
         Thread.sleep(3000);
-        Thread.sleep(3000);
         JSONObject result = TestBase.ResultHttp(request1);
         Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
+
     }
 
     @Test(parameters ="",priority=50,description = "重启主机")
     public void batch_sys_reboot() throws IOException, InterruptedException {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/batch_sys_reboot",body, token);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
-        Thread.sleep(3000);
+
         JSONObject result = TestBase.ResultHttp(request1);
 
     }

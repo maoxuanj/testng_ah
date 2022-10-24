@@ -42,7 +42,7 @@ public class initUser extends testBase12 {
         userLicenses.add("{\"limit\":10,\"bindModel\":null,\"plus\":1,\"plusType\":0,\"id\":\"3\",\"name\":\"EDR-MODULE-SERVER-WEB\",\"endTime\":\"2023-09-30\"}");
     }
 
-    @Test(parameters ="")
+    @Test(parameters ="",description = "第一次登陆用户初始化创建")
     public void list_template() throws IOException {
 
         request1 = RequestUtil.requestGet(url+"/user/list_user?limit=20&offset=0&order=&sort=",token_admin);
@@ -53,20 +53,18 @@ public class initUser extends testBase12 {
             for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
                 userName = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("realName").toString();
                 System.out.println(userName);
-                if(userName.equals("mxj6")){
-                    System.out.println("有mxj租户啦");
+                if(userName.equals(user_name)){
+                    System.out.println("有"+user_name+"租户啦");
                     break;
                 }else{
-                    System.out.println("这个租户不是Mxj");
+                    System.out.println("这个租户不是"+user_name);
                 }
             }
         }
-        //不存在时，创建mxj租户，密码为Admin1234
-        if(!userName.equals("mxj")){
-            System.out.println("需要创建");
-//            System.out.println(userLicenses);
-//            System.out.println("{\"userName\":\"mxj6\",\"password\":\"4X29YyXnw+zhGLXYp0VulQ==\",\"beUsed\":1,\"changePwd\":1,\"loginTimes\":1000,\"failCount\":5,\"neverTimeout\":1440,\"isLock\":15,\"licNum\":0,\"tel\":\"\",\"roleId\":\"1\",\"lessUser\":\"\",\"roleName\":\"租户管理员\",\"userLicenses\":"+userLicenses+"\",\"role\":2,\"userid\":\"\"}");
-            RequestBody body = RequestBody.create(mediaType,"{\"userName\":\"mxj\",\"password\":\"4X29YyXnw+zhGLXYp0VulQ==\",\"beUsed\":1,\"changePwd\":1,\"loginTimes\":1000,\"failCount\":5,\"neverTimeout\":1440,\"isLock\":15,\"licNum\":0,\"tel\":\"\",\"roleId\":\"1\",\"lessUser\":\"\",\"roleName\":\"租户管理员\",\"userLicenses\":"+userLicenses+",\"role\":2,\"userid\":\"\"}");
+        //不存在时，创建user_name租户，密码为Admin1234
+        if(!userName.equals(user_name)){
+            System.out.println("需要创建"+user_name);
+            RequestBody body = RequestBody.create(mediaType,"{\"userName\":"+"\""+user_name+"\",\"password\":\"er5DhVpsBHEQRHHzjveixA==\",\"beUsed\":1,\"changePwd\":1,\"loginTimes\":1000,\"failCount\":5,\"neverTimeout\":1440,\"isLock\":15,\"licNum\":0,\"tel\":\"\",\"roleId\":\"1\",\"lessUser\":\"\",\"roleName\":\"租户管理员\",\"userLicenses\":"+userLicenses+",\"role\":2,\"userid\":\"\"}");
             request1 = RequestUtil.requestPost2(url+"/user/save",body,token_admin);
             JSONObject result_add = TestBase.ResultHttp(request1);
         }
