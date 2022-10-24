@@ -101,7 +101,7 @@ public class UserTestDemo {
 
 
     //dependsOnMethods表示依赖前一个方法测试通过，该方法才执行，若不通过，则跳过执行
-    @Test(dependsOnMethods ="login_postmanchange" )
+    @Test()
     public void user_list_user() throws IOException {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())

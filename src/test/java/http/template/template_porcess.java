@@ -13,10 +13,12 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.test.utils.SftpFileUtil.inputFile_linux_withpath;
 
-public class porcess extends testBase12{
+public class template_porcess extends testBase12{
     //登录url
     OkHttpClient client;
     MediaType mediaType;
@@ -31,6 +33,7 @@ public class porcess extends testBase12{
     String nodeId;
     String path1;
     String fileName;
+    List nodeIds;
     @BeforeMethod()
     public void beforeClass123() throws IOException {
         //调用teseBase中的Init方法，对url进行赋值，无需每次更新url
@@ -70,9 +73,9 @@ public class porcess extends testBase12{
     }
 
     //以业务模板为模型创建一个新的策略
-    @Test(parameters ="",dependsOnMethods = "get_template_config",priority=3)
+    @Test(parameters ="",priority=3)
     public void save() throws IOException {
-        RequestBody body = RequestBody.create(mediaType,"{\"name\":\"5555\",\"note\":\"\",\"mainConfig\":"+mainConfig+"}");
+        RequestBody body = RequestBody.create(mediaType,"{\"name\":\"6666\",\"note\":\"\",\"mainConfig\":"+mainConfig+"}");
         request1 = RequestUtil.requestPost1(url+"/template/save",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
         templateId_create = result.get("data").toString();
@@ -100,11 +103,13 @@ public class porcess extends testBase12{
     @Test(parameters ="",priority=6)
     public void list_all_node_by_template() throws IOException {
         nodeId = "123456";
+        nodeIds =new ArrayList<>();
 //        templateId_create = "e5fc7625-eda1-4f09-a6f9-3c6858b7e0c4";
         request1 = RequestUtil.requestGet(url+"/template/list_all_node_by_template?key=&limit=20&offset=0&templateId="+templateId_create,token);
         JSONObject result = TestBase.ResultHttp(request1);
         for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             result.getJSONObject("data").getJSONArray("list").getJSONObject(i);
+            nodeIds.add("\""+result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id")+"\"");
             if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("new_name").equals(linux_name)){
                 nodeId =result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
                 break;
@@ -133,7 +138,7 @@ public class porcess extends testBase12{
     @Test(description = "连接linux，单机拓展程序文件",priority=9)
     public void linux_xdome() throws Exception {
         inputFile_linux_withpath(linux,linux_username,linux_password,path1,fileName);
-        String result = ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;ls");
+        String result = ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;ls");
 
     }
 
@@ -141,7 +146,7 @@ public class porcess extends testBase12{
     @Test(description = "导入模板",priority=10)
     public void import_model() throws Exception {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file","bingduku/templates.zip",
+                .addFormDataPart("file","bingduku/templates2.zip",
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File("bingduku/templates.zip")))
                 .build();
@@ -165,7 +170,8 @@ public class porcess extends testBase12{
     //将终端X绑定到新创建的模板上_allconfig
     @Test(parameters ="",priority=12)
     public void bind_allconfig() throws IOException {
-        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_testallconfig+"\",\"nodeIds\":[\"989e4d6fb36aad6999075fb4a2701a60b257059dd033fb7bd9994ccb5b0a7950\"]}");
+        System.out.println("{\"templateId\":"+"\""+templateId_testallconfig+"\",\"nodeIds\":"+nodeIds+"}");
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_testallconfig+"\",\"nodeIds\":"+nodeIds+"}");
         request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
     }
@@ -173,7 +179,8 @@ public class porcess extends testBase12{
     //异常操作触发
     @Test(parameters ="",priority=13)
     public void test_config() throws Exception {
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj2");
+
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj1;mkdir mxj2");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;touch mxj123.txt");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;touch mxj.txt");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj3;ls");
@@ -182,6 +189,15 @@ public class porcess extends testBase12{
         ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?redirectAction:test");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/1.html");
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
+        ShellUtil.shellCommand(linux,linux_username,"123456","ls");
+        ShellUtil.shellCommand(linux,linux_username,"654321","ls");
+        ShellUtil.shellCommand(linux,linux_username,"88856","ls");
+        ShellUtil.shellCommand(linux,linux_username,"987655","ls");
+        ShellUtil.shellCommand(linux,linux_username,"9636521","ls");
+        ShellUtil.shellCommand(linux,linux_username,"88888","ls");
+        ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
+//        linux="10.50.38.94";
+//        System.out.println("打断一下哈哈哈");
         Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?id=1%20and%201=1");//SQL注入
         Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?alert('test')");//XSS攻击
         Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?php://input");//应用程序漏洞
@@ -210,4 +226,10 @@ public class porcess extends testBase12{
 //        request1 = RequestUtil.requestDELETE(url+"/template/del?templateIds[]="+templateId_testallconfig,token);
 //         result = TestBase.ResultHttp(request1);
     }
+    
+    
+    
+    
+    
+    
 }

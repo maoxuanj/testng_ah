@@ -106,7 +106,7 @@ public class SetRoleTest {
 
     }
 
-    @Test(dependsOnMethods = "login")
+    @Test()
     public void skipSSL() throws Exception {
         CloseableHttpClient httpClient =(CloseableHttpClient)SkipHttpsUtil.wrapClient();
         HttpPost httpPost = new HttpPost("https://10.50.38.76/login");

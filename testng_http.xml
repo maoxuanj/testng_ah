@@ -5,13 +5,14 @@
         <listener class-name = "com.test.Listener.ExtenTestNGIReporterListenerOld" />
     </listeners>
     <test verbose="2" preserve-order="true" name="src/test/java">
-
+        <groups>
+            <run>
+                <exclude name="ignore"></exclude>
+            </run>
+        </groups>
         <packages>
             <package name="http.*">
 
-                <exclude name="ignore">
-
-                </exclude>
             </package>
         </packages>
     </test>

@@ -45,6 +45,20 @@ public class RequestUtil {
         return request;
     }
 
+    public static final Request requestPost2(String url, RequestBody requestBody, String token){
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                //times属性仅针对login接口
+//                .addHeader("Times", "1654046536400")
+                .addHeader("Authorization", "Bearer "+token)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Times", "1662445157137")
+                .build();
+
+        return request;
+    }
+
     public static final Request requestGet(String url, String token){
         Request request = new Request.Builder()
                 .url(url)

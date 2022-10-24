@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name=" Test Suite Demo_package">
+    <listeners>
+        <listener class-name = "com.test.Listener.ExtenTestNGIReporterListenerOld" />
+    </listeners>
+    <test verbose="2" preserve-order="true" name="src/test/java">
+        <groups>
+            <run>
+                <exclude name="ignore"></exclude>
+            </run>
+        </groups>
+        <packages>
+            <package name="http.*">
+
+            </package>
+        </packages>
+    </test>
+</suite>

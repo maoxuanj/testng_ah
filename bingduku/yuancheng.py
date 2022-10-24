@@ -1,0 +1,1 @@
+---- pupy ---- /usr/sbin/atd

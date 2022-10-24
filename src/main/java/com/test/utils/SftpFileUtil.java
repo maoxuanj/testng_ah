@@ -28,7 +28,8 @@ public class SftpFileUtil {
         //上传文件
         File file = new File("bingduku/lightnews.exe");
         InputStream inputStream = new FileInputStream(file);
-        channel.put(inputStream, "/usr/mxj1/lightnews.exe");
+        channel.put(inputStream, "/home/lightnews.exe");
+
 //        //下载文件
 //        OutputStream out = new FileOutputStream("d:\4.txt");
 //        channel.get("/root/file/1.txt", out);

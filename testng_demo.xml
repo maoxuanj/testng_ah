@@ -21,6 +21,10 @@
                 </exclude>
             </package>
 
+            <package name="http.*">
+
+            </package>
+
         </packages>
     </test>
 </suite>
