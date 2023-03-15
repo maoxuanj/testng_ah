@@ -2,6 +2,7 @@ package http.asset_overview;
 
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
+import com.test.utils.AssertUtil;
 import com.test.utils.GetidUtil;
 import com.test.utils.RequestUtil;
 import com.test.utils.SkipHttpsUtil;
@@ -10,6 +11,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -53,6 +55,7 @@ public class assert_overview_process extends testBase12{
     public void list_template() throws IOException {
         request1 = RequestUtil.requestGet(url + "/asset_overview/node/findNode?limit=20&offset=0&order=&sort=&key=", token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         nodeid=GetidUtil.getId_new(linux,"ip",result);
         System.out.println(nodeid);
     }
@@ -61,6 +64,7 @@ public class assert_overview_process extends testBase12{
     public void list_template_search() throws IOException {
         request1 = RequestUtil.requestGet(url + "/asset_overview/node/findNode?limit=20&offset=0&order=&sort=&key="+linux+"&ids[]="+nodeid, token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     @Test(parameters ="",priority=3,description = "停止防护")
@@ -68,6 +72,7 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"status\":0,\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/set_protect_status",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         Thread.sleep(3000);
     }
 
@@ -78,6 +83,7 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"type\":0,\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/upgrade_manage/update_program",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     @Test(parameters ="",priority=7,description = "消息推送")
@@ -85,6 +91,7 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"time\":0,\"text\":\"测试推送消息\",\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/batch_sys_broadcast",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
@@ -93,6 +100,7 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/batch_client_reboots",body, token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         Thread.sleep(3000);
     }
 
@@ -101,30 +109,51 @@ public class assert_overview_process extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"status\":1,\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/set_protect_status",body, token);
         Thread.sleep(3000);
+        Thread.sleep(3000);
+        Thread.sleep(3000);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         Thread.sleep(3000);
 
     }
 
-    @Test(parameters ="",priority=50,description = "重启主机")
+  //  @Test(parameters ="",priority=50,description = "重启主机")
     public void batch_sys_reboot() throws IOException, InterruptedException {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/batch_sys_reboot",body, token);
-
+        Thread.sleep(3000);
+        Thread.sleep(3000);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 
     }
 
-    @Test(parameters ="",priority=51,description = "卸载客户端")
+
+    @Test(parameters ="",priority=51,description = "启动防护")
+    public void set_protect_status_start_1() throws IOException, InterruptedException {
+        RequestBody body = RequestBody.create(mediaType,"{\"status\":1,\"ids\":[\""+nodeid+"\"]}");
+        request1 = RequestUtil.requestPost1(url + "/asset_overview/node/set_protect_status",body, token);
+        Thread.sleep(3000);
+        Thread.sleep(3000);
+        Thread.sleep(3000);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+        Thread.sleep(3000);
+
+    }
+
+
+    //@Test(parameters ="",priority=51,description = "卸载客户端")
     public void uninstallMain() throws IOException, InterruptedException {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":[\""+nodeid+"\"]}");
         request1 = RequestUtil.requestPost1(url + "/asset_overview/node/uninstallMain",body, token);
         Thread.sleep(3000);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         Thread.sleep(3000);
     }
 
-    @Test(parameters ="",priority=52,description = "删除终端")
+    //@Test(parameters ="",priority=52,description = "删除终端")
     public void removeBind() throws IOException, InterruptedException {
         request1 = RequestUtil.requestDELETE(url + "/asset_overview/node/removeBind?ids[]="+nodeid, token);
         Thread.sleep(3000);
@@ -132,6 +161,7 @@ public class assert_overview_process extends testBase12{
         Thread.sleep(3000);
         Thread.sleep(3000);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 

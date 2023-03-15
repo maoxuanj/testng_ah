@@ -21,7 +21,7 @@ public class SftpFileUtil {
         sshConfig.put("StrictHostKeyChecking", "no");
         session.setConfig(sshConfig);
         //连接Linux
-        session.connect();
+        session.connect(15000);
         //通过sftp的方式连接
         ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
         channel.connect();
@@ -34,6 +34,7 @@ public class SftpFileUtil {
 //        channel.get("/root/file/1.txt", out);
         //关闭流
         inputStream.close();
+        session.disconnect();
 //        out.close();
     }
 
@@ -51,7 +52,7 @@ public class SftpFileUtil {
         sshConfig.put("StrictHostKeyChecking", "no");
         session.setConfig(sshConfig);
         //连接Linux
-        session.connect();
+        session.connect(15000);
         //通过sftp的方式连接
         ChannelSftp channel = (ChannelSftp) session.openChannel("sftp");
         channel.connect();
@@ -64,6 +65,7 @@ public class SftpFileUtil {
 //        channel.get("/root/file/1.txt", out);
         //关闭流
         inputStream.close();
+        session.disconnect();
 //        out.close();
     }
 }

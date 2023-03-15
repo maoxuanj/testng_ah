@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name=" Test Suite Demo_package">
+    <listeners>
+        <listener class-name = "com.test.Listener.ExtenTestNGIReporterListenerOld" />
+        <listener class-name="com.test.Listener.RePrioritizingListener"></listener>
+    </listeners>
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="src/test/java">
+        <packages>
+            <package name="init"></package>
+            <package name="http.add_assets">
+            </package>
+            <package name="http.asset_overview"></package>
+            <package name="http.add_assets">
+            </package>
+            <package name="http.template"></package>
+            <package name="http.virus"></package>
+            <package name="http.network_trojan_killing"></package>
+            <package name="http.node_scan"></package>
+            <package name="http.dash_board"></package>
+        </packages>
+    </test>
+</suite>

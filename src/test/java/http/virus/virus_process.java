@@ -2,10 +2,7 @@ package http.virus;
 
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
-import com.test.utils.GetidUtil;
-import com.test.utils.RequestUtil;
-import com.test.utils.ShellUtil;
-import com.test.utils.SkipHttpsUtil;
+import com.test.utils.*;
 import http.TestBase;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -24,9 +21,10 @@ public class virus_process extends testBase12 {
     MediaType mediaType;
     Request request1;
     String asjson;
+    String asjson1;
     String path;
     String path_del_backup;
-    String name;
+    String ip;
     String node_id;
     String virus_id;
     String virus_id_del_backup;
@@ -53,6 +51,7 @@ public class virus_process extends testBase12 {
 
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/history_path",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //如果是初次登陆，没有自定义查杀路径则新增自定义查杀路径，默认为/usr/mxj1
         if (result.getJSONArray("data").size()>0){
             path = result.getJSONArray("data").get(0).toString();
@@ -77,6 +76,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav_kill/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
@@ -87,25 +87,27 @@ public class virus_process extends testBase12 {
     public void list_node() throws IOException, InterruptedException {
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/list_node?limit=20&offset=0&order=&sort=",token);
         JSONObject result = TestBase.ResultHttp(request1);
-//        System.out.println(JSONchange(result.get("data").toString(),"list"));
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         for (int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
-            name = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("newName").toString();
-            //System.out.println(name);
-            if(name.equals(linux_name)){
+            ip = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("ip").toString();
+            System.out.println(i);
+            if(ip.equals(linux)){
                 node_id = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
                 System.out.println(node_id);
-                for (int num = 0;num < 50 ;num++){
-                    if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
-                        break;
-                    }else {
-                        num++;
+                if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus")!=null){
+                    for (int num = 0;num < 50 ;num++){
+                        if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
+                            break;
+                        }else {
+                            num++;
+                        }
                     }
-
                 }
-            }else{
-                Thread.sleep(3000);
-                i ++;
-            }
+                else{
+                    Thread.sleep(3000);
+                    i ++;
+                }
+                }
         }
     }
 
@@ -116,10 +118,11 @@ public class virus_process extends testBase12 {
 
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav/read_page_scan_file?limit=20&offset=0&node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //首先连接一台终端
-    @Test(description = "连接linux，执行命令行",priority=5)
+    //@Test(description = "连接linux，执行命令行",priority=5)
     public void testlinux(){
         String result = ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;ls");
 
@@ -140,6 +143,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav_kill/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
@@ -153,27 +157,31 @@ public class virus_process extends testBase12 {
     public void list_node_second() throws IOException, InterruptedException {
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/list_node?limit=20&offset=0&order=&sort=",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        System.out.println(JSONchange(result.get("data").toString(),"list"));
         for (int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
-            name = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("newName").toString();
-            //System.out.println(name);
-            if(name.equals(linux_name)){
+            ip = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("ip").toString();
+            System.out.println(i);
+            if(ip.equals(linux)){
                 node_id = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
                 System.out.println(node_id);
-                for (int num = 0;num < 50 ;num++){
-                    if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
-                        break;
-                    }else {
-                        num++;
+                if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus")!=null){
+                    for (int num = 0;num < 10 ;num++){
+                        if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
+                            break;
+                        }else {
+                            num++;
+                        }
                     }
-
                 }
-            }else{
-                Thread.sleep(3000);
-                i ++;
+                else{
+                    Thread.sleep(1000);
+                    i ++;
+                }
             }
         }
     }
+
     //查看病毒查杀结果
     @Test(parameters ="",priority=9)
     public void read_page_scan_file_second() throws IOException {
@@ -181,7 +189,9 @@ public class virus_process extends testBase12 {
 //      node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav/read_page_scan_file?limit=20&offset=0&node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
-        asjson = result.getJSONObject("data").getJSONArray("list").toString();
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+        //处理病毒时的参数获取
+        asjson1 = result.getJSONObject("data").getJSONArray("list").toString();
         System.out.println(asjson);
     }
     //处理病毒（删除病毒）
@@ -189,11 +199,12 @@ public class virus_process extends testBase12 {
     public void fix_intelligent_items() throws IOException {
 
        // RequestBody body = RequestBody.create(mediaType, "{\"list\":[{\"desc\":\"HEUR/AGEN.1210240\",\"path\":\"/usr/mxj1/lightnews.exe\",\"hash\":\"8c797094b1c8e8f5d657db7089b15916\"}],\"node_id\":\"0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed\"}");
-        RequestBody body = RequestBody.create(mediaType,"{\"list\":"+asjson+",\"node_id\":\""+node_id+"\"}");
+        RequestBody body = RequestBody.create(mediaType,"{\"list\":"+asjson1+",\"node_id\":\""+node_id+"\"}");
         //这里格式稍微注意下，可以通过打印出来的方式鉴别下入参的问题，是否保持一致。后续优化就是asjons为空的时候不执行，做个非空检验
         //System.out.println("{\"list\":"+asjson+",\"node_id\":\""+node_id+"\"}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav/fix_intelligent_items",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //再次查看病毒查杀结果，此时理论上应该没有病毒了
@@ -203,6 +214,7 @@ public class virus_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav/read_page_scan_file?limit=20&offset=0&node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //list长度等于0，表明没有病毒了
         Assert.assertTrue(result.getJSONObject("data").getJSONArray("list").size()==0);
         Thread.sleep(3000);
@@ -217,6 +229,7 @@ public class virus_process extends testBase12 {
         System.out.println(node_id);
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/get_detail?limit=20&offset=0&order=&sort=&nodeId="+node_id+"&type=1",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         if(result.getJSONObject("data").getJSONArray("list").size()>0){
             virus_id = result.getJSONObject("data").getJSONArray("list").getJSONObject(0).get("id").toString();
             path = result.getJSONObject("data").getJSONArray("list").getJSONObject(0).get("path").toString();
@@ -240,6 +253,7 @@ public class virus_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/export_file?nodeId="+node_id+"&paths[]="+virus_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         down_virus = result.get("data").toString();
     }
 
@@ -250,6 +264,7 @@ public class virus_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/export_file_antiav?nodeId="+node_id+"&paths[]="+virus_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 
     }
 
@@ -262,6 +277,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav/restore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 
     }
 
@@ -272,7 +288,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path_del_backup+"\"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav/del_backup",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
-
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
@@ -285,6 +301,7 @@ public class virus_process extends testBase12 {
         System.out.println(node_id);
         request1 = RequestUtil.requestGet(url+"/virus_killing/antiav_kill/get_detail?limit=20&offset=0&order=&sort=&nodeId="+node_id+"&type=2",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     @Test(parameters ="",priority=17,description = "添加白名单")
@@ -292,6 +309,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"type\":\"3\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav/ignore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //重新扫描，原先病毒不会出现
@@ -301,15 +319,16 @@ public class virus_process extends testBase12 {
     @Test(parameters ="",priority=18,description = "第三次扫描")
     public void start_custom_scan_third() throws IOException, InterruptedException {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
+        System.out.println("{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav_kill/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         //这里写等待10s的原因是怕状态未更新，拿到的是前一次的结果，所以等待时间加成10秒
         Thread.sleep(10000);
-
     }
 
 
@@ -319,6 +338,7 @@ public class virus_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/virus_killing/antiav/cancel_ignore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 

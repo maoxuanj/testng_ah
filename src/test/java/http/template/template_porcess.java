@@ -2,9 +2,7 @@ package http.template;
 
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
-import com.test.utils.RequestUtil;
-import com.test.utils.ShellUtil;
-import com.test.utils.SkipHttpsUtil;
+import com.test.utils.*;
 import http.TestBase;
 import okhttp3.*;
 import org.testng.Assert;
@@ -27,6 +25,8 @@ public class template_porcess extends testBase12{
     Request request1;
     String templateId;
     String templateId_testallconfig;
+
+    String templateId_test_ttt;
     JSONObject mainConfig;
     JSONObject mainConfig_new;
     String templateId_create;
@@ -34,6 +34,7 @@ public class template_porcess extends testBase12{
     String path1;
     String fileName;
     List nodeIds;
+    String templateId_sys;
     @BeforeMethod()
     public void beforeClass123() throws IOException {
         //调用teseBase中的Init方法，对url进行赋值，无需每次更新url
@@ -54,11 +55,13 @@ public class template_porcess extends testBase12{
         templateId = "没有匹配值";
         request1 = RequestUtil.requestGet(url+"/template/list_template ",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("审计模板")){
                 templateId = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
             }
         }
+        templateId_sys = templateId;
         System.out.println(templateId);
     }
     //获取业务模板的配置
@@ -68,6 +71,7 @@ public class template_porcess extends testBase12{
         //request1 = RequestUtil.requestGet(url+"/template/get_template_config?templateId="+templateId,token);
         request1 = RequestUtil.requestGet(url+"/template/get_template_config?templateId="+templateId,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         mainConfig = result.getJSONObject("data").getJSONObject("mainConfig");
         System.out.println(mainConfig);
     }
@@ -78,6 +82,7 @@ public class template_porcess extends testBase12{
         RequestBody body = RequestBody.create(mediaType,"{\"name\":\"6666\",\"note\":\"\",\"mainConfig\":"+mainConfig+"}");
         request1 = RequestUtil.requestPost1(url+"/template/save",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         templateId_create = result.get("data").toString();
     }
     //查看新建策略配置,与默认模板一致
@@ -86,6 +91,7 @@ public class template_porcess extends testBase12{
 //        templateId_create = "e5fc7625-eda1-4f09-a6f9-3c6858b7e0c4";
         request1 = RequestUtil.requestGet(url+"/template/get_template_config?templateId="+templateId_create,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         mainConfig_new = result.getJSONObject("data").getJSONObject("mainConfig");
         //Assert.assertEquals(mainConfig,mainConfig_new);
     }
@@ -96,23 +102,24 @@ public class template_porcess extends testBase12{
 //        templateId_create = "e5fc7625-eda1-4f09-a6f9-3c6858b7e0c4";
         request1 = RequestUtil.requestGet(url+"/template/list_node_by_template?templateId="+templateId_create+"&offset=0&limit=10000",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         Assert.assertEquals(result.getJSONObject("data").get("total").toString(),"0");
     }
 
     //获取当前模板可绑定终端列表
     @Test(parameters ="",priority=6)
     public void list_all_node_by_template() throws IOException {
-        nodeId = "123456";
         nodeIds =new ArrayList<>();
-//        templateId_create = "e5fc7625-eda1-4f09-a6f9-3c6858b7e0c4";
         request1 = RequestUtil.requestGet(url+"/template/list_all_node_by_template?key=&limit=20&offset=0&templateId="+templateId_create,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             result.getJSONObject("data").getJSONArray("list").getJSONObject(i);
             nodeIds.add("\""+result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id")+"\"");
-            if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("new_name").equals(linux_name)){
+            if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("intranet_ip").equals(linux)){
                 nodeId =result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
-                break;
+                //注释：防止绑定终端时少绑定
+                //                break;
             }
         }
     }
@@ -120,9 +127,10 @@ public class template_porcess extends testBase12{
     //将终端X绑定到新创建的模板上
     @Test(parameters ="",priority=7)
     public void bind() throws IOException {
-         RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_create+"\",\"nodeIds\":[\"989e4d6fb36aad6999075fb4a2701a60b257059dd033fb7bd9994ccb5b0a7950\"]}");
+         RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_create+"\",\"nodeIds\":[\""+nodeId+"\"]}");
           request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //打开渗透追踪-单机拓展
@@ -133,6 +141,7 @@ public class template_porcess extends testBase12{
         RequestBody  body = RequestBody.create(mediaType,"{\"id\":"+"\""+templateId_create+"\",\"name\":\"55556\",\"note\":\"\",\"mainConfig\":"+mainConfig+"}");
         request1 = RequestUtil.requestPost1(url+"/template/save",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
     //将单机拓展程序文件传送到终端上   linux单机拓展不生效，该用例可不执行
    // @Test(description = "连接linux，单机拓展程序文件",priority=9)
@@ -146,22 +155,39 @@ public class template_porcess extends testBase12{
     @Test(description = "导入模板",priority=10)
     public void import_model() throws Exception {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file","bingduku/templates2.zip",
+                .addFormDataPart("file","bingduku/templates.zip",
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File("bingduku/templates.zip")))
                 .build();
         request1 = RequestUtil.requestPost1(url+"/template/import",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+        body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file","bingduku/templates3.zip",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File("bingduku/templates3.zip")))
+                .build();
+        request1 = RequestUtil.requestPost1(url+"/template/import",body,token);
+        JSONObject result2 = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result2));
+
     }
     //检查导入是否成功，列表新增一个名称为test_all_config的策略，获取Id
     @Test(parameters ="",priority=11)
     public void list_template_testallconfig() throws IOException {
         templateId_testallconfig = "没有匹配值";
+        templateId_test_ttt = "没有匹配值";
         request1 = RequestUtil.requestGet(url+"/template/list_template ",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("test_all_config")){
                 templateId_testallconfig = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
+            }
+        }
+        for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
+            if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("ttt")){
+                templateId_test_ttt = GetidUtil.getId_new("ttt","name",result);
             }
         }
         System.out.println(templateId_testallconfig);
@@ -170,10 +196,11 @@ public class template_porcess extends testBase12{
     //将终端X绑定到新创建的模板上_allconfig
     @Test(parameters ="",priority=12)
     public void bind_allconfig() throws IOException {
-        System.out.println("{\"templateId\":"+"\""+templateId_testallconfig+"\",\"nodeIds\":"+nodeIds+"}");
+        System.out.println("{\"templateId\":"+"\""+templateId_test_ttt+"\",\"nodeIds\":"+nodeIds+"}");
         RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_testallconfig+"\",\"nodeIds\":"+nodeIds+"}");
         request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //异常操作触发
@@ -181,13 +208,20 @@ public class template_porcess extends testBase12{
     public void test_config() throws Exception {
 
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj1;mkdir mxj2");
+        //文件访问监控触发
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;touch mxj123.txt");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;rm -rf mxj123.txt");
+        //网页防篡改
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;touch mxj.txt");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj3;ls");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?id=1 and 1= 1");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?alert('test')");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/?redirectAction:test");
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+linux+"/1.html");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;rm -rf mxj.txt");
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj4;ls");
+        //事件响应触发
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;touch mxj.txt");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;rm -rf mxj.txt");
+        //异常登陆审计触发
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
         ShellUtil.shellCommand(linux,linux_username,"123456","ls");
         ShellUtil.shellCommand(linux,linux_username,"654321","ls");
@@ -196,17 +230,32 @@ public class template_porcess extends testBase12{
         ShellUtil.shellCommand(linux,linux_username,"9636521","ls");
         ShellUtil.shellCommand(linux,linux_username,"88888","ls");
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
-//        linux="10.50.38.94";
-//        System.out.println("打断一下哈哈哈");
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?id=1%20and%201=1");//SQL注入
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?alert('test')");//XSS攻击
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/?php://input");//应用程序漏洞
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/1.html");//自定义规则
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/a.jpg/a.php");//文件解析防护
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/com1");//畸形文件
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+linux+"/a.log");//敏感信息防泄漏
+//端口扫描 先注释，发现端口扫描完后终端离线了
+//        String host = linux;
+//        InetAddress inetAddress = InetAddress.getByName(host);
+//        String hostName = inetAddress.getHostName();
+//        for (int port = 0; port <= 5; port++) {
+//            try {
+//                Socket socket = new Socket(hostName, port);
+//                String text = hostName + " is listening on port " + port;
+//                System.out.println(text);
+//                socket.close();
+//            } catch (IOException e) {
+//                // 空挡块
+//            }
+//        }
+//        System.out.println("这里是因为要做网站漏洞防护的，对应的终端需要安装iis服务,后续优化");
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?id=1%20and%201=1");//SQL注入
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?alert('test')");//XSS攻击
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?php://input");//应用程序漏洞
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/1.html");//自定义规则
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.jpg/a.php");//文件解析防护
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/com1");//畸形文件
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.log");//敏感信息防泄漏
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/");//敏感信息防泄漏
         Runtime.getRuntime().exec("cmd /k cd C:\\!AppDatasbak &&" +"echo hello >> text.txt" );//诱饵文件
-        Runtime.getRuntime().exec("cmd /c cd C:\\mxj1 &&" +"echo hello >> text.txt" );//防篡改
+        Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\Java &&" +"echo hello >> text.txt" );//防篡改
+        Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\Java &&" +"del text.txt" );//防篡改
         Runtime.getRuntime().exec("cmd /c xcopy D:\\test D:\\zhuomian\\muma\\wenjian1" );//触发渗透追踪——优化就是把文件上传到项目中
     }
 
@@ -222,14 +271,53 @@ public class template_porcess extends testBase12{
 //        templateId_create = "e5fc7625-eda1-4f09-a6f9-3c6858b7e0c4";
         request1 = RequestUtil.requestDELETE(url+"/template/del?templateIds[]="+templateId_create,token);
         JSONObject result = TestBase.ResultHttp(request1);
-
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        request1 = RequestUtil.requestDELETE(url+"/template/del?templateIds[]="+templateId_testallconfig,token);
 //         result = TestBase.ResultHttp(request1);
     }
-    
-    
-    
-    
-    
-    
+
+
+
+    @Test(parameters ="",description = "绑定终端到另一套策略中，触发其余操作",priority=15)
+    public void import_model_new() throws Exception {
+
+
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_test_ttt+"\",\"nodeIds\":"+nodeIds+"}");
+        request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
+
+
+    //@Test(parameters ="",description = "",priority=16)
+    public void test_config_web() throws Exception {
+        Runtime.getRuntime().exec("cmd /c start " +"http://"+ windows+"/");//网站访问控制
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+ windows+"/"); //网站黑名单
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?id=1%20and%201=1");//SQL注入
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?alert('test')");//XSS攻击
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?php://input");//应用程序漏洞
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/1.html");//自定义规则
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.jpg/a.php");//文件解析防护
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/com1");//畸形文件
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.log");//敏感信息防泄漏
+    }
+
+
+
+
+
+
+
+
+    //@Test(parameters ="",description = "绑定到默认模板中，减少一堆日志情况",priority=30)
+    public void band_sys() throws Exception {
+
+
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_sys+"\",\"nodeIds\":"+nodeIds+"}");
+        request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
+
+
 }

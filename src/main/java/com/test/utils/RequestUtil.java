@@ -9,8 +9,6 @@ public class RequestUtil {
         Request request = new Request.Builder()
                 .url(url)
                 .post(formBody)
-                //times属性仅针对login接口
-//                .addHeader("Times", "1654046536400")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
@@ -21,8 +19,6 @@ public class RequestUtil {
         Request request = new Request.Builder()
                 .url(url)
                 .patch(requestBody)
-                //times属性仅针对login接口
-//                .addHeader("Times", "1654046536400")
                 .addHeader("Authorization", "Bearer "+token)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
@@ -36,14 +32,15 @@ public class RequestUtil {
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
-                //times属性仅针对login接口
-//                .addHeader("Times", "1654046536400")
                 .addHeader("Authorization", "Bearer "+token)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
         return request;
     }
+
+
+
 
     public static final Request requestPost2(String url, RequestBody requestBody, String token){
         Request request = new Request.Builder()
@@ -56,6 +53,15 @@ public class RequestUtil {
                 .addHeader("Times", "1666577145133")
                 .build();
 
+        return request;
+    }
+
+    public static final Request requestPost3(String url, RequestBody requestBody, String token){
+        Request request = new Request.Builder()
+                .url(url)
+                .method("POST",requestBody)
+                .addHeader("Authorization", "Bearer "+token)
+                .build();
         return request;
     }
 

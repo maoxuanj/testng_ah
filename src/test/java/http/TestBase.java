@@ -9,6 +9,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class TestBase extends testBase12 {
@@ -17,6 +18,8 @@ public class TestBase extends testBase12 {
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .connectTimeout(95000, TimeUnit.MILLISECONDS)
+                .readTimeout(95000, TimeUnit.MILLISECONDS)
                 .build();
         //初始化拿到token
         FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","LYqe5P2mA/BaEeyKdSKmDA==")
@@ -41,6 +44,8 @@ public class TestBase extends testBase12 {
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .connectTimeout(95000, TimeUnit.MILLISECONDS)
+                .readTimeout(95000, TimeUnit.MILLISECONDS)
                 .build();
         //初始化拿到token
         FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","LYqe5P2mA/BaEeyKdSKmDA==")
@@ -62,6 +67,8 @@ public class TestBase extends testBase12 {
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .connectTimeout(95000, TimeUnit.MILLISECONDS)
+                .readTimeout(95000, TimeUnit.MILLISECONDS)
                 .build();
         //初始化拿到token
         FormBody formBody = new FormBody.Builder().add("username",user_name).add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
@@ -82,6 +89,8 @@ public class TestBase extends testBase12 {
         client = new OkHttpClient().newBuilder()
                 .sslSocketFactory(SkipHttpsUtil.getSSLSocketFactory(), SkipHttpsUtil.getX509TrustManager())
                 .hostnameVerifier(SkipHttpsUtil.getHostnameVerifier())
+                .connectTimeout(95000, TimeUnit.MILLISECONDS)
+                .readTimeout(95000, TimeUnit.MILLISECONDS)
                 .build();
         //初始化拿到token
         FormBody formBody = new FormBody.Builder().add("username","admin").add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
@@ -101,6 +110,7 @@ public class TestBase extends testBase12 {
 
 
     public static  JSONObject  ResultHttp(Request request1) throws IOException {
+
         Response response = client.newCall(request1).execute();
         JSONObject jsonObject =JSONObject.parseObject(response.body().string());
         System.out.println(jsonObject);

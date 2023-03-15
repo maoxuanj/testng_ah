@@ -25,6 +25,7 @@ public class testBase12 {
     public String linux_username;
     public String linux_password;
     public String linux_name;
+    public String windows;
     public static String user_name;
 
 //    @Autowired
@@ -59,6 +60,7 @@ public class testBase12 {
         }
         url = properties.getProperty("url");
         linux = properties.getProperty("linux");
+        windows = properties.getProperty("windows");
         linux_username = properties.getProperty("linux_username");
         linux_password = properties.getProperty("linux_password");
         linux_name = properties.getProperty("linux_name");

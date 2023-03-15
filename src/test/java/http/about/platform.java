@@ -2,12 +2,14 @@ package http.about;
 
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
+import com.test.utils.AssertUtil;
 import com.test.utils.RequestUtil;
 import com.test.utils.SkipHttpsUtil;
 import http.TestBase;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -37,6 +39,7 @@ public class platform extends testBase12{
 
         request1 = RequestUtil.requestGet(url+"/about/platform",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        Assert.assertTrue(result.get("data")!=null);
 //        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
     }
@@ -46,6 +49,7 @@ public class platform extends testBase12{
 
         request1 = RequestUtil.requestGet(url+"/about/uploadUrl",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        Assert.assertTrue(result.get("data")!=null);
 //        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
     }
@@ -55,6 +59,7 @@ public class platform extends testBase12{
 
         request1 = RequestUtil.requestGet(url+"/about/help",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        Assert.assertTrue(result.get("data")!=null);
 //        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
     }

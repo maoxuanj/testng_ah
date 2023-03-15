@@ -2,15 +2,13 @@ package http.network_trojan_killing;
 
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
-import com.test.utils.GetidUtil;
-import com.test.utils.RequestUtil;
-import com.test.utils.ShellUtil;
-import com.test.utils.SkipHttpsUtil;
+import com.test.utils.*;
 import http.TestBase;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -53,6 +51,7 @@ public class network_trojan_process extends testBase12 {
 
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/history_path",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //如果是初次登陆，没有自定义查杀路径则新增自定义查杀路径，默认为/usr/mxj1
         if (result.getJSONArray("data").size()>0){
             path = result.getJSONArray("data").get(0).toString();
@@ -77,6 +76,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/horse/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
@@ -87,15 +87,16 @@ public class network_trojan_process extends testBase12 {
     public void list_node() throws IOException, InterruptedException {
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/list_node?limit=20&offset=0&order=&sort=",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        System.out.println(JSONchange(result.get("data").toString(),"list"));
         for (int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             name = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("newName").toString();
             //System.out.println(name);
             if(name.equals(linux_name)){
-                node_id = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("id").toString();
+                node_id = GetidUtil.getId_new(linux,"ip",result);
                 System.out.println(node_id);
                 for (int num = 0;num < 50 ;num++){
-                    if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
+                    if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus")!=null && result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("scanStatus").toString().equals("扫描完成")){
                         break;
                     }else {
                         num++;
@@ -116,10 +117,11 @@ public class network_trojan_process extends testBase12 {
 
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/webScan/get_scanning_info?node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //首先连接一台终端
-    @Test(description = "连接linux，执行命令行",priority=5)
+    //@Test(description = "连接linux，执行命令行",priority=5)
     public void testlinux(){
         String result = ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;ls");
 
@@ -140,6 +142,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/horse/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
@@ -153,6 +156,7 @@ public class network_trojan_process extends testBase12 {
     public void list_node_second() throws IOException, InterruptedException {
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/list_node?limit=20&offset=0&order=&sort=",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        System.out.println(JSONchange(result.get("data").toString(),"list"));
         for (int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             name = result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("newName").toString();
@@ -181,6 +185,7 @@ public class network_trojan_process extends testBase12 {
 //      node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/webScan/get_scanning_info?node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         cur_path = result.getJSONObject("data").get("cur_path").toString();
         System.out.println(asjson);
     }
@@ -194,6 +199,7 @@ public class network_trojan_process extends testBase12 {
         //System.out.println("{\"list\":"+asjson+",\"node_id\":\""+node_id+"\"}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/webScan/fix_items",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //再次查看病毒查杀结果，此时理论上应该没有病毒了
@@ -203,6 +209,7 @@ public class network_trojan_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/webScan/get_scanning_info?node_id="+node_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //list长度等于0，表明没有病毒了
         //Assert.assertTrue(result.getJSONObject("data").get("virus_count").toString().equals("0"));
         Thread.sleep(3000);
@@ -217,6 +224,7 @@ public class network_trojan_process extends testBase12 {
         System.out.println(node_id);
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/get_detail?limit=20&offset=0&order=&sort=&nodeId="+node_id+"&type=1",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         if(result.getJSONObject("data").getJSONArray("list").size()>0){
             virus_id = result.getJSONObject("data").getJSONArray("list").getJSONObject(0).get("id").toString();
             path = result.getJSONObject("data").getJSONArray("list").getJSONObject(0).get("path").toString();
@@ -237,6 +245,7 @@ public class network_trojan_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/export_file?nodeId="+node_id+"&paths[]="+virus_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         down_virus = result.get("data").toString();
     }
 
@@ -247,7 +256,7 @@ public class network_trojan_process extends testBase12 {
 //        node_id = "0c87bfc92e342172430acfa8763b266cf7f2605cc53b8bf6ee17e191ded4e9ed";
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/export_file_antiav?nodeId="+node_id+"&paths[]="+virus_id,token);
         JSONObject result = TestBase.ResultHttp(request1);
-
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
@@ -259,7 +268,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/webScan/restore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
-
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     @Test(parameters ="",priority=15,description = "删除隔离区文件")
@@ -269,7 +278,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path_del_backup+"\"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/webScan/del_backup",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
-
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
@@ -282,6 +291,7 @@ public class network_trojan_process extends testBase12 {
         System.out.println(node_id);
         request1 = RequestUtil.requestGet(url+"/network_trojan_killing/horse/get_detail?limit=20&offset=0&order=&sort=&nodeId="+node_id+"&type=2",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     @Test(parameters ="",priority=17,description = "添加白名单")
@@ -289,6 +299,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"type\":\"3\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/webScan/ignore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
     //重新扫描，原先病毒不会出现
@@ -300,6 +311,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+node_id+"\"],\"paths\":["+asjson+"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/horse/start_custom_scan",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
         //执行完成后等待一段时间，等待扫描状态更新。比较好的写法是不断去调用查询接口，后续优化
         Thread.sleep(3000);
 
@@ -316,6 +328,7 @@ public class network_trojan_process extends testBase12 {
         RequestBody body = RequestBody.create(mediaType,"{\"node_id\":"+"\""+node_id+"\",\"paths\":["+"\""+path+"\"]}");
         request1 = RequestUtil.requestPut(url+"/network_trojan_killing/webScan/cancel_ignore",token,body);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 

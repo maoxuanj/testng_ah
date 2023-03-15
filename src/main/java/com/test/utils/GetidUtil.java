@@ -32,4 +32,20 @@ public class GetidUtil {
         return id;
     }
 
+    public static final String getId_no_list(String exceptName, String actName , JSONObject json){
+        String id = null;
+        JSONArray objectArray = json.getJSONArray("data");
+        Integer total = new Integer(json.getJSONArray("data").size());
+        for(int i=0;i<total;i++){
+            if(objectArray.getJSONObject(i).get(actName).toString().equals(exceptName)){
+                id = objectArray.getJSONObject(i).get("id").toString();
+                break;
+            }
+        }
+        return id;
+    }
+
+
+
+
 }

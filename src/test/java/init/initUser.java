@@ -47,7 +47,7 @@ public class initUser extends testBase12 {
 
         request1 = RequestUtil.requestGet(url+"/user/list_user?limit=20&offset=0&order=&sort=",token_admin);
         JSONObject result = TestBase.ResultHttp(request1);
-        //查看用户列表，是否存在mxj租户
+        //查看用户列表，是否存在user_name租户
         if(result.getJSONObject("data").getJSONArray("list").size()>0){
             //理论上肯定＞0，有一个admin账户的
             for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){

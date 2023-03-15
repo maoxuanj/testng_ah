@@ -3,6 +3,7 @@ package http.box;
 import MyTest.testBase12;
 import com.alibaba.fastjson.JSONObject;
 import com.test.client.RestfulClientGet;
+import com.test.utils.AssertUtil;
 import com.test.utils.JSONParser;
 import com.test.utils.RequestUtil;
 import com.test.utils.SkipHttpsUtil;
@@ -12,6 +13,7 @@ import okhttp3.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -51,6 +53,7 @@ public class get_box extends testBase12{
 
         request1 = RequestUtil.requestGet(url+"/box/get_box",token);
         JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
 //        Assert.assertTrue(result.get("data")!=null);
 //        Assert.assertEquals(result.get("data"),"/licManage/exportLic");
     }

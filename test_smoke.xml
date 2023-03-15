@@ -14,6 +14,7 @@
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="安装终端">
         <classes>
         <class name="http.add_assets.get_download_win"></class>
+            <class name="http.add_assets.download_process"></class>
         </classes>
     </test>
 
@@ -23,11 +24,6 @@
         </classes>
     </test>
 
-    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="重新安装/覆盖安装终端">
-        <classes>
-            <class name="http.add_assets.download_process"></class>
-        </classes>
-    </test>
 
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="策略管理流程">
         <classes>
@@ -47,16 +43,114 @@
         </classes>
     </test>
 
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="微隔离流程">
+        <classes>
+            <class name="http.microisolation.microisolation_label_process"></class>
+        </classes>
+    </test>
+
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="主机发现">
         <classes>
             <class name="http.node_scan.start_scan"></class>
         </classes>
     </test>
 
-    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="首页看班">
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="漏洞扫描流程">
+        <classes>
+            <class name="http.vul_manage.vul_manage_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="终端体检">
+        <classes>
+            <class name="http.node_risk.risk_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="文件推送">
+        <classes>
+            <class name="http.file_push.file"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="弱口令扫描">
+        <classes>
+            <class name="http.weak_password.weak_password"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="定期巡检">
+        <classes>
+            <class name="http.scheduled_task.task_process"></class>
+        </classes>
+    </test>
+
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="事件响应">
+        <classes>
+            <class name="http.event_search.event_search"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="分组标签">
+        <classes>
+            <class name="http.groupAndtitle.title"></class>
+        </classes>
+
+    </test>
+
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="敏感词任务">
+        <classes>
+            <class name="http.sensitive_words.sensitive_process"></class>
+        </classes>
+
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="网站备份任务">
+        <classes>
+            <class name="http.website_backup.website_backup"></class>
+        </classes>
+
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="防护日志">
+        <classes>
+            <class name="http.log.get_log"></class>
+        </classes>
+
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="操作日志">
+        <classes>
+            <class name="http.log.action_log"></class>
+        </classes>
+
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="运维日志">
+        <classes>
+            <class name="http.log.ops_log"></class>
+        </classes>
+
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="首页看板">
         <classes>
             <class name="http.dash_board.node_state"></class>
         </classes>
     </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="大屏查看">
+        <classes>
+            <class name="http.dasv.permissions"></class>
+        </classes>
+    </test>
+
+<!--    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="卸载终端">-->
+<!--        <classes>-->
+<!--            <class name="http.asset_overview.assert_overview_process_uninstall"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
 
 </suite>
