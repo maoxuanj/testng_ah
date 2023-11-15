@@ -92,7 +92,8 @@ public class TestBase extends testBase12 {
                 .connectTimeout(95000, TimeUnit.MILLISECONDS)
                 .readTimeout(95000, TimeUnit.MILLISECONDS)
                 .build();
-        //初始化拿到token
+        token_admin ="";
+        //初始化拿到token  账号admin/Admin1234
         FormBody formBody = new FormBody.Builder().add("username","admin").add("password","4X29YyXnw+zhGLXYp0VulQ==").add("type","other")
                 .build();
         Request request = new Request.Builder()

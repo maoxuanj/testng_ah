@@ -1,5 +1,5 @@
-import TestCase.DataProviderDemo;
-import TestCase.UserTestDemo;
+import JustTest.DataProviderDemo;
+import JustTest.UserTestDemo;
 import org.testng.TestNG;
 
 public class testngRun {

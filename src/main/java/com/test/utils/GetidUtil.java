@@ -32,6 +32,8 @@ public class GetidUtil {
         return id;
     }
 
+
+    //这个是因为有时候data不是一个jsonArray而是一个JsonObject
     public static final String getId_no_list(String exceptName, String actName , JSONObject json){
         String id = null;
         JSONArray objectArray = json.getJSONArray("data");

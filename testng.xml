@@ -3,7 +3,7 @@
 <suite name=" Test Suite Demo">
     <test verbose="2" preserve-order="true" name="src/test/java">
         <packages>
-            <package name="TestCase.*">
+            <package name="JustTest.*">
 
                 <exclude name="ignore">
 

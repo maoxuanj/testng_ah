@@ -1,0 +1,158 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > testBase12</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">MyTest</a>
+</div>
+
+<h1>Coverage Summary for Class: testBase12 (MyTest)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">testBase12</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (16/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package MyTest;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.io.BufferedReader;
+<i class="no-highlight">4</i>&nbsp;import java.io.FileReader;
+<i class="no-highlight">5</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">6</i>&nbsp;import java.io.InputStream;
+<i class="no-highlight">7</i>&nbsp;import java.util.Properties;
+<i class="no-highlight">8</i>&nbsp;
+<b class="fc"><i class="no-highlight">9</i>&nbsp;public class testBase12 {</b>
+<i class="no-highlight">10</i>&nbsp;    public String url;
+<i class="no-highlight">11</i>&nbsp;    public String userName;
+<i class="no-highlight">12</i>&nbsp;    public String password;
+<i class="no-highlight">13</i>&nbsp;    public String ProdName;
+<i class="no-highlight">14</i>&nbsp;    public String version;
+<i class="no-highlight">15</i>&nbsp;    public String pathName;
+<i class="no-highlight">16</i>&nbsp;    public BufferedReader bufferedReader;
+<b class="fc"><i class="no-highlight">17</i>&nbsp;    public Properties properties = new Properties();</b>
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    public  void init() throws IOException {
+<b class="fc"><i class="no-highlight">20</i>&nbsp;        new Startup();</b>
+<i class="no-highlight">21</i>&nbsp;        //此处对产品名称，版本赋值
+<b class="fc"><i class="no-highlight">22</i>&nbsp;        ProdName = &quot;EDR&quot;;</b>
+<b class="fc"><i class="no-highlight">23</i>&nbsp;        version = &quot;V3_0_1_2&quot;;</b>
+<b class="fc"><i class="no-highlight">24</i>&nbsp;        if(ProdName.isEmpty()){</b>
+<i class="no-highlight">25</i>&nbsp;            //为空时设置为EDR模块
+<b class="nc"><i class="no-highlight">26</i>&nbsp;            ProdName = &quot;EDR&quot;;</b>
+<i class="no-highlight">27</i>&nbsp;        }
+<i class="no-highlight">28</i>&nbsp;
+<b class="fc"><i class="no-highlight">29</i>&nbsp;        if(ProdName!=null &amp;&amp; ProdName.equals(&quot;EDR&quot;)){</b>
+<i class="no-highlight">30</i>&nbsp;
+<b class="fc"><i class="no-highlight">31</i>&nbsp;            pathName = &quot; C:\\Users\\admin\\IdeaProjects\\Test_Edr\\src\\main\\resources\\EDR&quot;;</b>
+<i class="no-highlight">32</i>&nbsp;        }
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;
+<b class="fc"><i class="no-highlight">35</i>&nbsp;        if(version != null){</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;            InputStream in = testBase12.class.getClassLoader().getResourceAsStream(&quot;EDR/v3_0_1_2.properties&quot;);</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;            System.out.println(in);</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;            properties.load(in);</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;            System.out.println(properties);</b>
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        }else if(version.isEmpty() || Thread.currentThread().getContextClassLoader().getResource(pathName+&quot;\\&quot;+version) == null){</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;            bufferedReader = new BufferedReader(new FileReader(&quot;C:\\Users\\admin\\IdeaProjects\\Test_Edr\\src\\main\\resources\\EDR\\V3_0_1_2.properties&quot;));</b>
+<b class="nc"><i class="no-highlight">42</i>&nbsp;            properties.load(bufferedReader);</b>
+<i class="no-highlight">43</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        url = properties.getProperty(&quot;url&quot;);</b>
+<b class="fc"><i class="no-highlight">45</i>&nbsp;        if(url ==null){</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;            url = &quot;https://10.20.128.74&quot;;</b>
+<i class="no-highlight">47</i>&nbsp;        }
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-09 10:06</div>
+</div>
+</body>
+</html>

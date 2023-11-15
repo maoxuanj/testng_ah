@@ -14,7 +14,7 @@
                 </exclude>
             </package>
 
-            <package name="TestCase">
+            <package name="JustTest">
 
                 <exclude name="ignore">
 

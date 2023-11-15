@@ -197,7 +197,7 @@
                     <forkMode>never</forkMode>
                     <argLine>-Dfile.encoding-UTF-8</argLine>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
@@ -235,6 +235,11 @@
     <!--JDK版本-->
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
+        <!-- 文件拷贝时的编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译时的编码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 </project>

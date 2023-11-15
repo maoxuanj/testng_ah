@@ -68,7 +68,7 @@ public class initUser extends testBase12 {
             request1 = RequestUtil.requestPost2(url+"/user/save",body,token_admin);
             JSONObject result_add = TestBase.ResultHttp(request1);
         }
-        TestBase.http_user_init_other();
+        TestBase. http_user_init_other();
         System.out.println("登陆成功");
     }
 

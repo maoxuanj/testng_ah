@@ -49,7 +49,7 @@ public class baseline_process extends testBase12 {
         JSONObject result = TestBase.ResultHttp(request1);
         node_id = GetidUtil.getId_new(linux,"ip",result);
         name = "基线检查"+Math.random();
-        name_delete = "基线检查"+Math.random();
+        name_delete = "基线检查_需要删除"+Math.random();
     }
 
     @Test(parameters = "", priority = 1)
@@ -84,15 +84,19 @@ public class baseline_process extends testBase12 {
     @Test(parameters = "", priority = 5,description = "新增基线检查")
     public void add_task() throws IOException {
         RequestBody body = RequestBody.create(mediaType,"{\"name\":"+"\""+name_delete+"\",\"nodes\":["+"\""+node_id+"\"],\"ployIds\":[2,303],\"time\":{\"type\":\"day\",\"day\":[0],\"time\":\"00:00:00\"},\"params\":{},\"type\":1}");
-        request = RequestUtil.requestPost1(url + "base_line/save",body, token);
+        request = RequestUtil.requestPost1(url + "/base_line/save",body, token);
         JSONObject result = TestBase.ResultHttp(request);
-        Assert.assertTrue(AssertUtil.ifsuccess(result));
+
+        body = RequestBody.create(mediaType,"{\"name\":"+"\""+name+"\",\"nodes\":["+"\""+node_id+"\"],\"ployIds\":[2,303],\"time\":{\"type\":\"day\",\"day\":[0],\"time\":\"00:00:00\"},\"params\":{},\"type\":1}");
+        request = RequestUtil.requestPost1(url + "/base_line/save",body, token);
+        JSONObject result2 = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result2));
 
     }
 
     @Test(parameters = "", priority = 6,description = "查看列表，新增的任务出现在列表中")
     public void list_task() throws IOException {
-        request = RequestUtil.requestGet(url + "/task/get_task_list?limit=20&offset=0&order=&sort=", token);
+        request = RequestUtil.requestGet(url + "/base_line/get_task_list?limit=20&offset=0&order=&sort=&key=", token);
         JSONObject result = TestBase.ResultHttp(request);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
         schedule_id =GetidUtil.getId_new(name,"name",result);
@@ -103,23 +107,70 @@ public class baseline_process extends testBase12 {
     @Test(parameters = "", priority = 7,description = "编辑基线检查")
     public void modify_task() throws IOException {
         name = "基线检查update"+Math.random();
-        RequestBody body = RequestBody.create(mediaType,"{\"name\":"+"\""+name+"\",\"time\":{\"type\":\"day\",\"day\":[0],\"time\":\"00:00:00\"},\"type\":[\"antiav_quick\",\"weakPassword\",\"vulfix\"],\"node_ids\":["+"\""+node_id+"\"],\"desc\":\"update\",\"flagAll\":false,\"id\":"+"\""+schedule_id+"\"}");
-        request = RequestUtil.requestPatch(url + "/base_line/save",body, token);
+        RequestBody body = RequestBody.create(mediaType,"{\"name\":"+"\""+name+"\",\"nodes\":["+"\""+node_id+"\"],\"ployIds\":[2,303],\"time\":{\"type\":\"day\",\"day\":[0],\"time\":\"00:00:00\"},\"params\":{},\"type\":1}");
+        request = RequestUtil.requestPost1(url + "/base_line/save",body, token);
         JSONObject result = TestBase.ResultHttp(request);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
         Assert.assertTrue(result.get("error_code")!=null);
 
     }
 
-    @Test(parameters = "", priority = 8,description = "删除基线检查")
+    @Test(parameters = "", priority = 8,description = "查看更新后的列表")
+    public void list_task_afterupdate() throws IOException {
+        request = RequestUtil.requestGet(url + "/base_line/get_task_list?limit=20&offset=0&order=&sort=&key=", token);
+        JSONObject result = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+        schedule_id =GetidUtil.getId_new(name,"name",result);
+        System.out.println(schedule_id);
+    }
+
+    @Test(parameters = "", priority = 9,description = "删除基线检查")
     public void delete_task() throws IOException {
 
-        request = RequestUtil.requestDELETE(url + "/task/delete_task?ids[]="+schedule_id_delete, token);
+        request = RequestUtil.requestDELETE(url + "/base_line/del?ids[]="+schedule_id_delete, token);
         JSONObject result = TestBase.ResultHttp(request);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
 
 
     }
 
+    @Test(parameters = "", priority = 10,description = "批量执行基线检查")
+    public void start_scan() throws IOException {
+        // 调试使用 schedule_id="19b60fbe-e9b2-4e4a-a761-c8bfb1f8733c";
+        RequestBody body = RequestBody.create(mediaType,"{\"ids\":["+"\""+schedule_id+"\"]}");
+        request = RequestUtil.requestPut(url+"/base_line/start_scan",token,body);
+        JSONObject result = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+
+
+    }
+
+    @Test(parameters = "", priority =11,description = "查看检查结果")
+    public void get_task_info_list() throws IOException {
+        // 调试使用 schedule_id="19b60fbe-e9b2-4e4a-a761-c8bfb1f8733c";
+        request = RequestUtil.requestGet(url + "/base_line/get_task_info_list?limit=20&offset=0&order=&sort=&key=&task_id="+schedule_id, token);
+        JSONObject result = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
+
+    @Test(parameters = "", priority =12,description = "查看基线结果详情")
+    public void get_task_info_ploy() throws IOException {
+        // 调试使用 schedule_id="19b60fbe-e9b2-4e4a-a761-c8bfb1f8733c";
+        request = RequestUtil.requestGet(url + "/base_line/get_task_node_info_list?limit=20&offset=0&order=&sort=&key=&task_id="+schedule_id+"&ploy_id=303", token);
+        JSONObject result = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
+
+
+    @Test(parameters = "", priority =13,description = "根据任务名称定向查询")
+    public void search() throws IOException {
+        // 调试使用 name="update";
+        request = RequestUtil.requestGet(url + "/base_line/get_task_list?limit=20&offset=0&order=&sort=&key="+name,token);
+        JSONObject result = TestBase.ResultHttp(request);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+        //定向搜索理论上肯定有内容，基本等于1，实际考虑复杂情况，>0即可
+        Assert.assertTrue(result.getJSONObject("data").getJSONArray("list").size()>0);
+
+    }
 
 }

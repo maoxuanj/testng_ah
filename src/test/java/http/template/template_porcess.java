@@ -27,6 +27,10 @@ public class template_porcess extends testBase12{
     String templateId_testallconfig;
 
     String templateId_test_ttt;
+
+    String templateId_test_test;
+
+    String templateId_test_blackprocess;
     JSONObject mainConfig;
     JSONObject mainConfig_new;
     String templateId_create;
@@ -171,12 +175,32 @@ public class template_porcess extends testBase12{
         JSONObject result2 = TestBase.ResultHttp(request1);
         Assert.assertTrue(AssertUtil.ifsuccess(result2));
 
+        body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file","bingduku/templates4.zip",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File("bingduku/templates4.zip")))
+                .build();
+        request1 = RequestUtil.requestPost1(url+"/template/import",body,token);
+        JSONObject result3 = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result2));
+
+        body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file","bingduku/templates5.zip",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File("bingduku/templates5.zip")))
+                .build();
+        request1 = RequestUtil.requestPost1(url+"/template/import",body,token);
+        JSONObject result4 = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result2));
+
     }
     //检查导入是否成功，列表新增一个名称为test_all_config的策略，获取Id
     @Test(parameters ="",priority=11)
     public void list_template_testallconfig() throws IOException {
         templateId_testallconfig = "没有匹配值";
         templateId_test_ttt = "没有匹配值";
+        templateId_test_test = "没有匹配值";
+        templateId_test_blackprocess = "没有匹配值";
         request1 = RequestUtil.requestGet(url+"/template/list_template ",token);
         JSONObject result = TestBase.ResultHttp(request1);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
@@ -188,6 +212,16 @@ public class template_porcess extends testBase12{
         for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
             if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("ttt")){
                 templateId_test_ttt = GetidUtil.getId_new("ttt","name",result);
+            }
+        }
+        for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
+            if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("test_test")){
+                templateId_test_test = GetidUtil.getId_new("test_test","name",result);
+            }
+        }
+        for(int i=0;i<result.getJSONObject("data").getJSONArray("list").size();i++){
+            if(result.getJSONObject("data").getJSONArray("list").getJSONObject(i).get("name").equals("test_blackprocess")){
+                templateId_test_blackprocess = GetidUtil.getId_new("test_blackprocess","name",result);
             }
         }
         System.out.println(templateId_testallconfig);
@@ -214,13 +248,13 @@ public class template_porcess extends testBase12{
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;rm -rf mxj123.txt");
         //网页防篡改
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;touch mxj.txt");
-        //数据销毁
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;rm -rf mxj.txt");
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr;mkdir mxj4;ls");
         //事件响应触发
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;touch mxj.txt");
         //数据销毁
         ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;rm -rf mxj.txt");
+        //入侵检测
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"chmod u+x sshd");
         //异常登陆审计触发
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
         ShellUtil.shellCommand(linux,linux_username,"123456","ls");
@@ -230,6 +264,9 @@ public class template_porcess extends testBase12{
         ShellUtil.shellCommand(linux,linux_username,"9636521","ls");
         ShellUtil.shellCommand(linux,linux_username,"88888","ls");
         ShellUtil.shellCommand(linux,linux_username,"error_password","ls");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj2;rm -rf mxj.txt");
+
 //端口扫描 先注释，发现端口扫描完后终端离线了
 //        String host = linux;
 //        InetAddress inetAddress = InetAddress.getByName(host);
@@ -257,6 +294,8 @@ public class template_porcess extends testBase12{
         Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\Java &&" +"echo hello >> text.txt" );//防篡改
         Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\Java &&" +"del text.txt" );//防篡改
         Runtime.getRuntime().exec("cmd /c xcopy D:\\test D:\\zhuomian\\muma\\wenjian1" );//触发渗透追踪——优化就是把文件上传到项目中
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?id=1%20and%201=1");//SQL注入
+        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?php://input");//应用程序漏洞
     }
 
     //查看是否产生日志
@@ -282,30 +321,54 @@ public class template_porcess extends testBase12{
     public void import_model_new() throws Exception {
 
 
-        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_test_ttt+"\",\"nodeIds\":"+nodeIds+"}");
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_test_test+"\",\"nodeIds\":"+nodeIds+"}");
         request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
-    //@Test(parameters ="",description = "",priority=16)
+    @Test(parameters ="",description = "",priority=16)
     public void test_config_web() throws Exception {
-        Runtime.getRuntime().exec("cmd /c start " +"http://"+ windows+"/");//网站访问控制
-        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+ windows+"/"); //网站黑名单
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?id=1%20and%201=1");//SQL注入
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?alert('test')");//XSS攻击
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/?php://input");//应用程序漏洞
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+ windows+"/"); //网站黑名单+进程白名单触发
         Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/1.html");//自定义规则
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.jpg/a.php");//文件解析防护
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/com1");//畸形文件
-        Runtime.getRuntime().exec("cmd /c start " + "http://"+windows+"/a.log");//敏感信息防泄漏
+        //文件访问监控触发
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;touch mxj123.txt");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj1;rm -rf mxj123.txt");
+        Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\DBAppSecurity &&" +"echo hello >> text.txt" );//防篡改
+        Runtime.getRuntime().exec("cmd /c cd C:\\Program Files (x86)\\DBAppSecurity &&" +"del text.txt" );//防篡改
+    }
+
+    @Test(parameters ="",description = "绑定终端到test_blackprocess中，触发网站访问控制和进程黑名单操作",priority=17)
+    public void import_model_blackprocess() throws Exception {
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_test_blackprocess+"\",\"nodeIds\":"+nodeIds+"}");
+        request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
     }
 
 
+    @Test(parameters ="",description = "",priority=18)
+    public void test_config_blackprocess() throws Exception {
+        Runtime.getRuntime().exec("cmd /c start " +"http://"+ windows+"/");//网站访问控制
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"curl "+ windows+"/"); //进程黑名单触发
+        //进程黑名单触发
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;touch mxj123.txt");
+        //数据销毁
+        ShellUtil.shellCommand(linux,linux_username,linux_password,"cd /usr/mxj4;rm -rf mxj123.txt");
+    }
 
 
+    @Test(parameters ="",description = "绑定终端到ttt",priority=20)
+    public void import_model_ttt() throws Exception {
 
+
+        RequestBody  body = RequestBody.create(mediaType,"{\"templateId\":"+"\""+templateId_test_ttt+"\",\"nodeIds\":"+nodeIds+"}");
+        request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
 
 
 
@@ -317,6 +380,20 @@ public class template_porcess extends testBase12{
         request1 = RequestUtil.requestPost1(url+"/template/bind",body,token);
         JSONObject result = TestBase.ResultHttp(request1);
         Assert.assertTrue(AssertUtil.ifsuccess(result));
+    }
+
+
+    @Test(description = "导入一个全部都是关闭的模板",priority=22)
+    public void import_model_close() throws Exception {
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file","bingduku/close.zip",
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File("bingduku/close.zip")))
+                .build();
+        request1 = RequestUtil.requestPost1(url+"/template/import",body,token);
+        JSONObject result = TestBase.ResultHttp(request1);
+        Assert.assertTrue(AssertUtil.ifsuccess(result));
+
     }
 
 

@@ -25,11 +25,34 @@
     </test>
 
 
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="容器安全">
+        <classes>
+            <class name="http.container.container_process"></class>
+        </classes>
+    </test>
+
+
+
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="策略管理流程">
         <classes>
             <class name="http.template.template_porcess"></class>
         </classes>
     </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="移动存储">
+        <classes>
+            <class name="http.peripherals.peripherals_process"></class>
+        </classes>
+    </test>
+
+
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="入侵检测">
+        <classes>
+            <class name="http.attack.attack_matrix"></class>
+        </classes>
+    </test>
+
 
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="病毒扫描流程">
         <classes>
@@ -64,6 +87,12 @@
     <test preserve-order="true" verbose="2"  allow-return-values="true"  name="终端体检">
         <classes>
             <class name="http.node_risk.risk_process"></class>
+        </classes>
+    </test>
+
+    <test preserve-order="true" verbose="2"  allow-return-values="true"  name="基线检查">
+        <classes>
+            <class name="Baseline_check.baseline_process"></class>
         </classes>
     </test>
 
